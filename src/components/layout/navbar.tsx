@@ -5,12 +5,15 @@ import {
     FilmIcon,
     HomeIcon,
     MenuIcon,
+    SearchIcon,
     Tv2Icon,
     XIcon,
 } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 interface NavItemConfig {
     href: LinkOptions["to"];
@@ -32,6 +35,7 @@ const navItems: NavItemConfig[] = [
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -89,8 +93,19 @@ const Navbar = () => {
 
                     {/* Right Actions */}
                     <div className="flex items-center gap-2">
-                        {/* Search Toggle */}
-                        {/* TODO: Add search button to toggle search */}
+                        <Button
+                            aria-label="Toggle search"
+                            aria-pressed={isSearchOpen}
+                            className="flex size-9 items-center justify-center transition-all"
+                            onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            variant="secondary"
+                        >
+                            {isSearchOpen ? (
+                                <XIcon size={18} />
+                            ) : (
+                                <SearchIcon size={18} />
+                            )}
+                        </Button>
 
                         {/* Mobile Nav Toggle */}
                         <Button
@@ -108,7 +123,19 @@ const Navbar = () => {
                     </div>
                 </nav>
 
-                {/* Search bar */}
+                {isSearchOpen && (
+                    <div className="border-sidebar-border border-t px-4 pb-4 md:px-8 lg:px-12">
+                        <Label className="sr-only" htmlFor="navbar-search">
+                            Search movies and TV series
+                        </Label>
+                        <Input
+                            className="mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 text-sm"
+                            id="navbar-search"
+                            placeholder="Search movies, TV shows..."
+                            type="search"
+                        />
+                    </div>
+                )}
             </header>
 
             {/* Mobile Navigation */}
