@@ -59,7 +59,7 @@ export function isRecent(dateString: string | null | undefined): boolean {
  * Formats a given runtime in minutes into a human-readable format.
  * If the runtime is empty or null, it returns "N/A".
  * Otherwise, it formats the runtime into "Xh Ym" format.
- * @param {number | null | undefined} minutes The runtime in minutes to format.
+ * @param {number | null} minutes The runtime in minutes to format.
  * @returns {string} The formatted runtime.
  */
 export function formatRuntime(minutes: number | null): string {

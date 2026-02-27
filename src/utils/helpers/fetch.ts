@@ -1,6 +1,8 @@
 import axios from "axios";
 import { buildTMDBUrl } from "./url";
 
+const TMDB_REQUEST_TIMEOUT_MS = 10_000;
+
 /**
  * Fetches data from the TMDB API.
  *
@@ -31,6 +33,7 @@ export async function tmdbFetch<T>(
             "Content-Type": "application/json",
             Accept: "application/json",
         },
+        timeout: TMDB_REQUEST_TIMEOUT_MS,
         validateStatus: () => true,
     });
 

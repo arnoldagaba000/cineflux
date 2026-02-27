@@ -32,7 +32,13 @@ export function buildTMDBUrl(
     endpoint: string,
     params?: Record<string, string | number | boolean | undefined>
 ): string {
-    const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
+    const normalisedBase = TMDB_BASE_URL.endsWith("/")
+        ? TMDB_BASE_URL
+        : `${TMDB_BASE_URL}/`;
+    const normalisedEndpoint = endpoint.startsWith("/")
+        ? endpoint.slice(1)
+        : endpoint;
+    const url = new URL(normalisedEndpoint, normalisedBase);
 
     url.searchParams.set("language", DEFAULT_LANGUAGE);
 
