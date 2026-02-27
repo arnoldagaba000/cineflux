@@ -38,6 +38,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             },
         ],
     }),
+    notFoundComponent: NotFoundPage,
     shellComponent: RootDocument,
 });
 
@@ -48,7 +49,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 <HeadContent />
             </head>
 
-            <body>
+            <body suppressHydrationWarning>
                 <TanStackQueryProvider>
                     <ThemeProvider
                         attribute="class"
@@ -80,5 +81,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 <Scripts />
             </body>
         </html>
+    );
+}
+
+function NotFoundPage() {
+    return (
+        <section className="mx-auto flex w-full max-w-2xl flex-col items-center gap-3 py-16 text-center">
+            <h1 className="font-bold text-2xl">Page not found</h1>
+            <p className="text-muted-foreground">
+                The page you requested does not exist.
+            </p>
+            <a
+                className="text-amber-500 underline-offset-4 hover:underline"
+                href="/"
+            >
+                Go back home
+            </a>
+        </section>
     );
 }
