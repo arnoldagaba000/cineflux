@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { type GetMoviesInput, queryKeys } from "@/types/api";
-import type { TMDBMediaType, TMDBTimeWindow } from "@/types/tmdb";
+import type { TMDBTimeWindow } from "@/types/tmdb";
 import { cacheConfig } from "@/utils/constants/cache";
 import {
     getMovieCredits,
@@ -25,12 +25,9 @@ export const movieQueryOptions = (params: GetMoviesInput) =>
         ...cacheConfig.short,
     });
 
-export const trendingMoviesQueryOptions = (
-    timeWindow: TMDBTimeWindow,
-    mediaType: TMDBMediaType = "movie"
-) =>
+export const trendingMoviesQueryOptions = (timeWindow: TMDBTimeWindow) =>
     queryOptions({
-        queryKey: [...queryKeys.trending(mediaType, timeWindow)],
+        queryKey: [...queryKeys.movies.trending(timeWindow)],
         queryFn: () => getTrendingMovies({ data: { time_window: timeWindow } }),
         ...cacheConfig.short,
     });

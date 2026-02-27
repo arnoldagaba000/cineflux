@@ -4,6 +4,7 @@ import type {
     TMDBCredits,
     TMDBGenreListResponse,
     TMDBImagesResponse,
+    TMDBTVDetail,
     TMDBTVListResponse,
     TMDBVideosResponse,
 } from "@/types/tmdb";
@@ -21,9 +22,9 @@ export const getTVShows = createServerFn()
 export const getTrendingTVShows = createServerFn()
     .inputValidator(timeWindow)
     .handler(async ({ data }) => {
-        return await tmdbFetch<TMDBTVListResponse>("/trending/tv/", {
-            ...data,
-        });
+        return await tmdbFetch<TMDBTVListResponse>(
+            `/trending/tv/${data.time_window}`
+        );
     });
 
 export const getTopRatedTVShows = createServerFn().handler(async () => {
@@ -45,7 +46,7 @@ export const getPopularTVShows = createServerFn().handler(async () => {
 export const getTVShowDetails = createServerFn()
     .inputValidator(tvIdSchema)
     .handler(async ({ data }) => {
-        return await tmdbFetch<TMDBTVListResponse>(`/tv/${data.id}`);
+        return await tmdbFetch<TMDBTVDetail>(`/tv/${data.id}`);
     });
 
 export const getTVShowCredits = createServerFn()
