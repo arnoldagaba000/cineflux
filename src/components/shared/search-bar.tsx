@@ -27,6 +27,7 @@ const SearchBar = ({
                 />
 
                 <Input
+                    autoFocus={autoFocus}
                     className="mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm"
                     id="navbar-search"
                     placeholder={placeholder}

@@ -43,17 +43,18 @@ const Navbar = () => {
             return;
         }
 
-        const handleScroll = () => setIsScrolled(window.scrollY > 20);
+        /**
+         * Handles window scroll event, and updates isScrolled state accordingly.
+         * Checks if window.scrollY is greater than 20, and updates isScrolled state.
+         */
+        const handleScroll = () => {
+            const hasScrolled = window.scrollY > 20;
+            setIsScrolled(hasScrolled);
+        };
         handleScroll();
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    useEffect(() => {
-        if (isScrolled) {
-            setIsSearchOpen(false);
-        }
-    }, [isScrolled]);
 
     useEffect(() => {
         if (!mobileOpen) {
@@ -85,8 +86,13 @@ const Navbar = () => {
             }
         };
 
+        const passiveTouchOptions: AddEventListenerOptions = { passive: true };
         document.addEventListener("mousedown", handleOutsideClick);
-        document.addEventListener("touchstart", handleOutsideClick);
+        document.addEventListener(
+            "touchstart",
+            handleOutsideClick,
+            passiveTouchOptions
+        );
 
         return () => {
             document.removeEventListener("mousedown", handleOutsideClick);
@@ -178,7 +184,6 @@ const Navbar = () => {
                     <div className="border-sidebar-border border-t px-4 pb-4 md:px-8 lg:px-12">
                         <div className="mx-auto max-w-2xl">
                             <SearchBar
-                                autoFocus
                                 onClose={() => setIsSearchOpen(false)}
                                 placeholder="Search movies, TV shows..."
                             />
