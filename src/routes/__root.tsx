@@ -7,10 +7,10 @@ import {
 } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
+import Navbar from "@/components/layout/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import devPlugins from "@/integrations/dev-tools";
 import TanStackQueryProvider from "@/integrations/react-query";
-
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -56,7 +56,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                         enableSystem
                         storageKey="cineflux-theme"
                     >
-                        <TooltipProvider>{children}</TooltipProvider>
+                        <TooltipProvider>
+                            <div className="flex min-h-screen flex-col scroll-smooth">
+                                <Navbar />
+
+                                <main className="flex-1 px-4 pt-3">
+                                    {children}
+                                </main>
+                            </div>
+                        </TooltipProvider>
                     </ThemeProvider>
 
                     <Toaster position="bottom-left" />
