@@ -1,4 +1,8 @@
-import type { TMDBDiscoverMovieParams, TMDBDiscoverTVParams } from "./tmdb";
+import type {
+    TMDBDiscoverMovieParams,
+    TMDBDiscoverTVParams,
+    TMDBTimeWindow,
+} from "./tmdb";
 import type { MediaCategory } from "./ui";
 
 // ─── API Response Wrapper ─────────────────────────────────────────────────────
@@ -132,8 +136,15 @@ export const queryKeys = {
         ["trending", mediaType, timeWindow] as const,
     movies: {
         list: (params: GetMoviesInput) => ["movies", "list", params] as const,
+        trending: (timeWindow: TMDBTimeWindow) =>
+            ["movies", "trending", timeWindow] as const,
+        popular: () => ["movies", "popular"] as const,
+        topRated: () => ["movies", "topRated"] as const,
+        upcoming: () => ["movies", "upcoming"] as const,
+        nowPlaying: () => ["movies", "nowPlaying"] as const,
         detail: (id: number) => ["movies", "detail", id] as const,
         credits: (id: number) => ["movies", "credits", id] as const,
+        images: (id: number) => ["movies", "images", id] as const,
         videos: (id: number) => ["movies", "videos", id] as const,
         similar: (id: number) => ["movies", "similar", id] as const,
         recommendations: (id: number) =>
@@ -142,8 +153,15 @@ export const queryKeys = {
     },
     tv: {
         list: (params: GetTVSeriesInput) => ["tv", "list", params] as const,
+        trending: (timeWindow: TMDBTimeWindow) =>
+            ["tv", "trending", timeWindow] as const,
+        popular: () => ["tv", "popular"] as const,
+        topRated: () => ["tv", "topRated"] as const,
+        onTheAir: () => ["tv", "onTheAir"] as const,
+        airingToday: () => ["tv", "airingToday"] as const,
         detail: (id: number) => ["tv", "detail", id] as const,
         credits: (id: number) => ["tv", "credits", id] as const,
+        images: (id: number) => ["tv", "images", id] as const,
         videos: (id: number) => ["tv", "videos", id] as const,
         similar: (id: number) => ["tv", "similar", id] as const,
         recommendations: (id: number) => ["tv", "recommendations", id] as const,

@@ -10,13 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TvIndexRouteImport } from './routes/tv/index'
+import { Route as MoviesIndexRouteImport } from './routes/movies/index'
 import { Route as AppBookmarksRouteImport } from './routes/_app/bookmarks'
-import { Route as AppTvIndexRouteImport } from './routes/_app/tv/index'
-import { Route as AppMoviesIndexRouteImport } from './routes/_app/movies/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvIndexRoute = TvIndexRouteImport.update({
+  id: '/tv/',
+  path: '/tv/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIndexRoute = MoviesIndexRouteImport.update({
+  id: '/movies/',
+  path: '/movies/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppBookmarksRoute = AppBookmarksRouteImport.update({
@@ -24,49 +34,39 @@ const AppBookmarksRoute = AppBookmarksRouteImport.update({
   path: '/bookmarks',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppTvIndexRoute = AppTvIndexRouteImport.update({
-  id: '/_app/tv/',
-  path: '/tv/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppMoviesIndexRoute = AppMoviesIndexRouteImport.update({
-  id: '/_app/movies/',
-  path: '/movies/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bookmarks': typeof AppBookmarksRoute
-  '/movies/': typeof AppMoviesIndexRoute
-  '/tv/': typeof AppTvIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/tv/': typeof TvIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bookmarks': typeof AppBookmarksRoute
-  '/movies': typeof AppMoviesIndexRoute
-  '/tv': typeof AppTvIndexRoute
+  '/movies': typeof MoviesIndexRoute
+  '/tv': typeof TvIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app/bookmarks': typeof AppBookmarksRoute
-  '/_app/movies/': typeof AppMoviesIndexRoute
-  '/_app/tv/': typeof AppTvIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/tv/': typeof TvIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/bookmarks' | '/movies/' | '/tv/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/bookmarks' | '/movies' | '/tv'
-  id: '__root__' | '/' | '/_app/bookmarks' | '/_app/movies/' | '/_app/tv/'
+  id: '__root__' | '/' | '/_app/bookmarks' | '/movies/' | '/tv/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppBookmarksRoute: typeof AppBookmarksRoute
-  AppMoviesIndexRoute: typeof AppMoviesIndexRoute
-  AppTvIndexRoute: typeof AppTvIndexRoute
+  MoviesIndexRoute: typeof MoviesIndexRoute
+  TvIndexRoute: typeof TvIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,25 +78,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv/': {
+      id: '/tv/'
+      path: '/tv'
+      fullPath: '/tv/'
+      preLoaderRoute: typeof TvIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/': {
+      id: '/movies/'
+      path: '/movies'
+      fullPath: '/movies/'
+      preLoaderRoute: typeof MoviesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/bookmarks': {
       id: '/_app/bookmarks'
       path: '/bookmarks'
       fullPath: '/bookmarks'
       preLoaderRoute: typeof AppBookmarksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app/tv/': {
-      id: '/_app/tv/'
-      path: '/tv'
-      fullPath: '/tv/'
-      preLoaderRoute: typeof AppTvIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app/movies/': {
-      id: '/_app/movies/'
-      path: '/movies'
-      fullPath: '/movies/'
-      preLoaderRoute: typeof AppMoviesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -105,8 +105,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppBookmarksRoute: AppBookmarksRoute,
-  AppMoviesIndexRoute: AppMoviesIndexRoute,
-  AppTvIndexRoute: AppTvIndexRoute,
+  MoviesIndexRoute: MoviesIndexRoute,
+  TvIndexRoute: TvIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -28,7 +28,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
                 content: "width=device-width, initial-scale=1",
             },
             {
-                title: "Cineflux",
+                title: "CineFlux — Your Cinema Universe",
+            },
+            {
+                name: "description",
+                content:
+                    "Discover movies, TV shows, and actors with CineFlux. Explore your cinema universe with personalized recommendations, watchlists, and more.",
             },
         ],
         links: [
