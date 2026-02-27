@@ -1,3 +1,5 @@
+import { DEFAULT_LANGUAGE, TMDB_BASE_URL } from "../constants/tmdb";
+
 /**
  * Builds a query string from a given object of key-value pairs.
  * Ignores undefined and null values.
@@ -17,4 +19,30 @@ export function buildQueryString(
     }
     const result = searchParams.toString();
     return result ? `?${result}` : "";
+}
+
+/**
+ * Builds a URL for a given TMDB endpoint with optional query parameters.
+ * @param {string} endpoint The TMDB endpoint to build the URL for.
+ * @param {Record<string, string | number | boolean | undefined> | null} [params] The object of key-value pairs to build the query string from.
+ * Ignores undefined and null values.
+ * @returns {string} The built URL string.
+ */
+export function buildTMDBUrl(
+    endpoint: string,
+    params?: Record<string, string | number | boolean | undefined>
+): string {
+    const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
+
+    url.searchParams.set("language", DEFAULT_LANGUAGE);
+
+    if (params) {
+        for (const [key, value] of Object.entries(params)) {
+            if (value !== undefined && value !== null) {
+                url.searchParams.set(key, String(value));
+            }
+        }
+    }
+
+    return url.toString();
 }

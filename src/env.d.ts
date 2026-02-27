@@ -12,14 +12,25 @@ interface ImportMeta {
 // biome-ignore lint/style/noNamespace: <explanation>
 declare namespace NodeJS {
     interface ProcessEnv {
-        // Database (optional - for full auth implementation)
+        // Database
         DATABASE_URL?: string;
+
+        // JWT
         JWT_EXPIRES_IN?: string;
-        // JWT (optional - for full auth implementation)
         JWT_SECRET?: string;
+
+        // Node
         NODE_ENV: "development" | "production" | "test";
+
         // Session
         SESSION_SECRET?: string;
+
+        // TMDB
+        TMDB_API_ACCESS_TOKEN: string;
         TMDB_API_KEY: string;
+        TMDB_BASE_URL: string;
+        TMDB_IMAGE_BASE_URL: string;
+        TMDB_LANGUAGE: string;
+        TMDB_REGION: string;
     }
 }
