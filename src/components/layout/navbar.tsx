@@ -11,9 +11,8 @@ import {
 } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import SearchBar from "../shared/search-bar";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 
 interface NavItemConfig {
     href: LinkOptions["to"];
@@ -42,7 +41,13 @@ const Navbar = () => {
         handleScroll();
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
-    });
+    }, []);
+
+    useEffect(() => {
+        if (isScrolled) {
+            setIsSearchOpen(false);
+        }
+    }, [isScrolled]);
 
     return (
         <>
@@ -125,15 +130,13 @@ const Navbar = () => {
 
                 {isSearchOpen && (
                     <div className="border-sidebar-border border-t px-4 pb-4 md:px-8 lg:px-12">
-                        <Label className="sr-only" htmlFor="navbar-search">
-                            Search movies and TV series
-                        </Label>
-                        <Input
-                            className="mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 text-sm"
-                            id="navbar-search"
-                            placeholder="Search movies, TV shows..."
-                            type="search"
-                        />
+                        <div className="mx-auto max-w-2xl">
+                            <SearchBar
+                                autoFocus
+                                onClose={() => setIsSearchOpen(false)}
+                                placeholder="Search movies, TV shows..."
+                            />
+                        </div>
                     </div>
                 )}
             </header>
