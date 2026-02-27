@@ -33,7 +33,7 @@ export const paginatedMovieIdSchema = movieIdSchema.extend({
 
 export const searchMoviesSchema = z.object({
     query: z.string().min(1),
-    page: z.number().default(1),
+    page: z.number().int().positive().default(1),
     include_adult: z.boolean().default(false),
     year: z.number().optional(),
 });

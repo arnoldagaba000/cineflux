@@ -9,7 +9,7 @@ export const cacheConfig = {
     },
     long: {
         staleTime: 60 * 60 * 1000, // 1 hour
-        gcTime: 24 * 60 * 60 * 1000, // 48 hours
+        gcTime: 24 * 60 * 60 * 1000, // 24 hours
     },
     veryLong: {
         staleTime: 24 * 60 * 60 * 1000, // 24 hours

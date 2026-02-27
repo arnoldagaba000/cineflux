@@ -132,8 +132,6 @@ export type TMDBEndpoint =
 // ─── Query Key Factory ────────────────────────────────────────────────────────
 
 export const queryKeys = {
-    trending: (mediaType: string, timeWindow: string) =>
-        ["trending", mediaType, timeWindow] as const,
     movies: {
         list: (params: GetMoviesInput) => ["movies", "list", params] as const,
         trending: (timeWindow: TMDBTimeWindow) =>

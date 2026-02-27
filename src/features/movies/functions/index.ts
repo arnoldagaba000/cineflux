@@ -27,9 +27,7 @@ export const getMovies = createServerFn()
 export const getTrendingMovies = createServerFn()
     .inputValidator(timeWindow)
     .handler(async ({ data }) => {
-        return await tmdbFetch<TMDBMovieListResponse>("/trending/movie/", {
-            ...data,
-        });
+        return await tmdbFetch<TMDBMovieListResponse>(`/trending/movie/${data.time_window}`);
     });
 
 export const getTopRatedMovies = createServerFn().handler(async () => {

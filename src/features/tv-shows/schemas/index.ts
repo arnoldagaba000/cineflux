@@ -13,7 +13,7 @@ export const discoverTVSchema = z.object({
         ])
         .default("popularity.desc"),
     with_genres: z.string().optional(),
-    first_air_date_year: z.number().int().optional(),
+    first_air_date_year: z.string().optional(),
     language: z.string().default("en-US"),
 });
 
@@ -27,7 +27,7 @@ export const paginatedTVIdSchema = tvIdSchema.extend({
 
 export const searchTVSchema = z.object({
     query: z.string().min(1),
-    page: z.number().default(1),
+    page: z.number().int().positive().default(1),
     include_adult: z.boolean().default(false),
-    first_air_date_year: z.number().optional(),
+    first_air_date_year: z.string().optional(),
 });
