@@ -43,12 +43,13 @@ const Navbar = () => {
             return;
         }
 
+        /**
+         * Handles window scroll event, and updates isScrolled state accordingly.
+         * Checks if window.scrollY is greater than 20, and updates isScrolled state.
+         */
         const handleScroll = () => {
             const hasScrolled = window.scrollY > 20;
             setIsScrolled(hasScrolled);
-            if (hasScrolled) {
-                setIsSearchOpen(false);
-            }
         };
         handleScroll();
         window.addEventListener("scroll", handleScroll, { passive: true });
