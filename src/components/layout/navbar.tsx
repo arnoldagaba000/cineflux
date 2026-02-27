@@ -9,7 +9,7 @@ import {
     Tv2Icon,
     XIcon,
 } from "lucide-react";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import SearchBar from "../shared/search-bar";
 import { Button } from "../ui/button";
@@ -35,8 +35,14 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+    const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
 
     useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
+
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
         handleScroll();
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -48,6 +54,45 @@ const Navbar = () => {
             setIsSearchOpen(false);
         }
     }, [isScrolled]);
+
+    useEffect(() => {
+        if (!mobileOpen) {
+            return;
+        }
+        if (typeof document === "undefined") {
+            return;
+        }
+
+        /**
+         * Handles outside clicks on the mobile menu toggle and menu items.
+         *
+         * If the click event does not originate from within the mobile menu or its toggle,
+         * the mobile menu is closed.
+         */
+        const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
+            const targetNode = event.target as Node | null;
+            if (!targetNode) {
+                return;
+            }
+
+            const clickedInsideMenu =
+                mobileMenuRef.current?.contains(targetNode) ?? false;
+            const clickedToggle =
+                mobileToggleRef.current?.contains(targetNode) ?? false;
+
+            if (!(clickedInsideMenu || clickedToggle)) {
+                setMobileOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener("touchstart", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+            document.removeEventListener("touchstart", handleOutsideClick);
+        };
+    }, [mobileOpen]);
 
     return (
         <>
@@ -117,6 +162,7 @@ const Navbar = () => {
                             aria-label="Toggle menu"
                             className="flex size-9 items-center justify-center transition-all md:hidden"
                             onClick={() => setMobileOpen(!mobileOpen)}
+                            ref={mobileToggleRef}
                             variant="secondary"
                         >
                             {mobileOpen ? (
@@ -142,8 +188,34 @@ const Navbar = () => {
             </header>
 
             {/* Mobile Navigation */}
-            {/* TODO: Add mobile navigation */}
-            {mobileOpen && <div className="" />}
+            {mobileOpen && (
+                <div
+                    className="fixed inset-x-0 top-16 z-40 border-sidebar-border border-b bg-sidebar/95 px-4 py-3 shadow-xl backdrop-blur-md md:hidden"
+                    ref={mobileMenuRef}
+                >
+                    <div className="mx-auto flex max-w-full flex-col gap-1">
+                        {navItems.map((item) => (
+                            <Link
+                                activeProps={{
+                                    className:
+                                        "text-amber-400 bg-amber-500/10 border-amber-500/40",
+                                }}
+                                className="flex items-center gap-3 rounded-lg border border-transparent px-3 py-2.5 font-medium text-sm transition-colors"
+                                inactiveProps={{
+                                    className:
+                                        "text-zinc-300 hover:bg-zinc-800 hover:text-white",
+                                }}
+                                key={`mobile-${item.label}`}
+                                onClick={() => setMobileOpen(false)}
+                                to={item.href}
+                            >
+                                {item.icon}
+                                {item.label}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
         </>
     );
 };
