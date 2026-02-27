@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { timeWindow } from "@/features/movies/schemas";
 import type {
     TMDBCredits,
     TMDBGenreListResponse,
@@ -17,14 +16,6 @@ export const getTVShows = createServerFn()
         return await tmdbFetch<TMDBTVListResponse>("/discover/tv", {
             ...data,
         });
-    });
-
-export const getTrendingTVShows = createServerFn()
-    .inputValidator(timeWindow)
-    .handler(async ({ data }) => {
-        return await tmdbFetch<TMDBTVListResponse>(
-            `/trending/tv/${data.time_window}`
-        );
     });
 
 export const getTopRatedTVShows = createServerFn().handler(async () => {
