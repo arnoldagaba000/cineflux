@@ -54,3 +54,24 @@ export function isRecent(dateString: string | null | undefined): boolean {
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
     return date >= sixMonthsAgo;
 }
+
+/**
+ * Formats a given runtime in minutes into a human-readable format.
+ * If the runtime is empty or null, it returns "N/A".
+ * Otherwise, it formats the runtime into "Xh Ym" format.
+ * @param {number | null | undefined} minutes The runtime in minutes to format.
+ * @returns {string} The formatted runtime.
+ */
+export function formatRuntime(minutes: number | null): string {
+    if (!minutes) {
+        return "N/A";
+    }
+
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    if (h === 0) {
+        return `${m}m`;
+    }
+    
+    return `${h}h ${m}m`;
+}
