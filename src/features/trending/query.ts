@@ -5,7 +5,7 @@ import { getTrending } from "./function";
 
 export const trendingQueryOptions = (timeWindow: TMDBTimeWindow = "week") =>
     queryOptions({
-        queryKey: ["trending"],
+        queryKey: ["trending", timeWindow],
         queryFn: () => getTrending({ data: { mediaType: "all", timeWindow } }),
         ...cacheConfig.short,
     });
