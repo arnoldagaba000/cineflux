@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import FeaturedHero from "@/components/shared/featured-hero";
 import FeaturedHeroFallback from "@/components/shared/featured-hero-fallback";
+import TrendingCarousel from "@/components/shared/trending-carousel";
 import {
     popularMoviesQueryOptions,
     topRatedMoviesQueryOptions,
@@ -17,6 +18,7 @@ import {
     normalizeTrendingItem,
     normalizeTV,
 } from "@/utils/helpers/normalizers";
+import CarouselSkeleton from "@/components/shared/carousel-skeleton";
 
 export const Route = createFileRoute("/")({
     component: HomePage,
@@ -71,6 +73,16 @@ function HomePage() {
             <Suspense fallback={<FeaturedHeroFallback />}>
                 <FeaturedHero items={heroItems} />
             </Suspense>
+
+            {/* Content sections */}
+            <div className="mx-auto max-w-screen-2xl space-y-14 px-4 py-12 md:px-8 lg:px-12">
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={trendingItems}
+                        title="Trending this week"
+                    />
+                </Suspense>
+            </div>
         </div>
     );
 }
