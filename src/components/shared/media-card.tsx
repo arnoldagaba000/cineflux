@@ -41,6 +41,7 @@ const MediaCard = ({
                     <ImageWithFallback
                         alt={media.title}
                         className="h-full w-full"
+                        priority={priority}
                         src={buildPosterUrl(media.posterPath, "w92")}
                     />
                 </div>
@@ -90,6 +91,7 @@ const MediaCard = ({
                     <ImageWithFallback
                         alt={media.title}
                         className="h-full w-full"
+                        priority={priority}
                         src={buildPosterUrl(media.posterPath, "w185")}
                     />
                     <div className="absolute inset-0 bg-linear-to-r from-transparent to-zinc-900/20" />
@@ -158,6 +160,7 @@ const MediaCard = ({
                 <ImageWithFallback
                     alt={media.title}
                     className="h-full w-full transition-transform duration-500 group-hover:scale-105"
+                    priority={priority}
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                     src={buildPosterUrl(media.posterPath, "w342")}
                 />
