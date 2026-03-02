@@ -153,7 +153,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                     </Button>
 
                     <div className="flex gap-1.5">
-                        {featured.map((_, i) => (
+                        {featured.map((item, i) => (
                             <button
                                 aria-label={`Slide ${i + 1}`}
                                 className={cn(
@@ -162,8 +162,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                                         ? "w-6 bg-amber-500"
                                         : "w-1.5 bg-white/30 hover:bg-white/50"
                                 )}
-                                // biome-ignore lint/suspicious/noArrayIndexKey: static slide indicators
-                                key={i}
+                                key={`${item.mediaType}-${item.id}`}
                                 onClick={() => setActiveIndex(i)}
                                 type="button"
                             />

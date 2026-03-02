@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/correctness/useImageSize: Dimensions are defined by fixed card layouts */
 import { FilmIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface ImageWithFallbackProps {
@@ -12,6 +12,44 @@ interface ImageWithFallbackProps {
     src: string | null | undefined;
 }
 
+interface ImageLoadState {
+    error: boolean;
+    loaded: boolean;
+}
+
+type ImageLoadAction =
+    | { type: "reset" }
+    | { type: "loaded" }
+    | { type: "errored" };
+
+const initialImageLoadState: ImageLoadState = {
+    error: false,
+    loaded: false,
+};
+
+/**
+ * Reducer for image load state.
+ *
+ * @param {ImageLoadState} state current image load state
+ * @param {ImageLoadAction} action action to perform on image load state
+ * @returns {ImageLoadState} new image load state
+ */
+function imageLoadReducer(
+    state: ImageLoadState,
+    action: ImageLoadAction
+): ImageLoadState {
+    switch (action.type) {
+        case "loaded":
+            return { error: false, loaded: true };
+        case "errored":
+            return { error: true, loaded: false };
+        case "reset":
+            return initialImageLoadState;
+        default:
+            return state;
+    }
+}
+
 const ImageWithFallback = ({
     src,
     alt,
@@ -21,12 +59,13 @@ const ImageWithFallback = ({
     priority = false,
 }: ImageWithFallbackProps) => {
     const imageRef = useRef<HTMLImageElement | null>(null);
-    const [error, setError] = useState(false);
-    const [loaded, setLoaded] = useState(false);
+    const [{ error, loaded }, dispatch] = useReducer(
+        imageLoadReducer,
+        initialImageLoadState
+    );
 
     useEffect(() => {
-        setError(false);
-        setLoaded(false);
+        dispatch({ type: "reset" });
 
         if (!src) {
             return;
@@ -38,22 +77,20 @@ const ImageWithFallback = ({
         }
 
         const handleLoad = () => {
-            setLoaded(true);
-            setError(false);
+            dispatch({ type: "loaded" });
         };
         const handleError = () => {
-            setError(true);
-            setLoaded(false);
+            dispatch({ type: "errored" });
         };
 
         // Cached images can be complete before effects attach listeners.
         if (imageElement.complete) {
             if (imageElement.naturalWidth > 0) {
-                setLoaded(true);
+                dispatch({ type: "loaded" });
                 return;
             }
 
-            setError(true);
+            dispatch({ type: "errored" });
             return;
         }
 
