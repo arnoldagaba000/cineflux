@@ -1,4 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
+import { getTrending } from "@/features/trending/function";
 import { type GetTVSeriesInput, queryKeys } from "@/types/api";
 import type { TMDBTimeWindow } from "@/types/tmdb";
 import { cacheConfig } from "@/utils/constants/cache";
@@ -9,7 +10,6 @@ import {
     getRecommendedTVShows,
     getSimilarTVShows,
     getTopRatedTVShows,
-    getTrendingTVShows,
     getTVGenres,
     getTVShowCredits,
     getTVShowDetails,
@@ -28,8 +28,7 @@ export const tvShowsQueryOptions = (params: GetTVSeriesInput) =>
 export const trendingTVShowsQueryOptions = (timeWindow: TMDBTimeWindow) =>
     queryOptions({
         queryKey: [...queryKeys.tv.trending(timeWindow)],
-        queryFn: () =>
-            getTrendingTVShows({ data: { time_window: timeWindow } }),
+        queryFn: () => getTrending({ data: { mediaType: "tv", timeWindow } }),
         ...cacheConfig.short,
     });
 

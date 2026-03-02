@@ -352,7 +352,7 @@ export interface TMDBDiscoverMovieParams {
 }
 
 export interface TMDBDiscoverTVParams {
-    first_air_date_year?: number;
+    first_air_date_year?: string;
     language?: string;
     page?: number;
     sort_by?:

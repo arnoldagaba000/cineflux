@@ -13,7 +13,6 @@ import {
     movieIdSchema,
     paginatedMovieIdSchema,
     searchMoviesSchema,
-    timeWindow,
 } from "../schemas";
 
 export const getMovies = createServerFn()
@@ -22,12 +21,6 @@ export const getMovies = createServerFn()
         return await tmdbFetch<TMDBMovieListResponse>("/discover/movie", {
             ...data,
         });
-    });
-
-export const getTrendingMovies = createServerFn()
-    .inputValidator(timeWindow)
-    .handler(async ({ data }) => {
-        return await tmdbFetch<TMDBMovieListResponse>(`/trending/movie/${data.time_window}`);
     });
 
 export const getTopRatedMovies = createServerFn().handler(async () => {
@@ -93,11 +86,9 @@ export const getMovieRecommendations = createServerFn()
         );
     });
 
-export const getMovieGenres = createServerFn().handler(
-    async () => {
-        return await tmdbFetch<TMDBGenreListResponse>("/genre/movie/list");
-    }
-);
+export const getMovieGenres = createServerFn().handler(async () => {
+    return await tmdbFetch<TMDBGenreListResponse>("/genre/movie/list");
+});
 
 export const searchMovies = createServerFn()
     .inputValidator(searchMoviesSchema)

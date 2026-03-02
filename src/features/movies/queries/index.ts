@@ -1,4 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
+import { getTrending } from "@/features/trending/function";
 import { type GetMoviesInput, queryKeys } from "@/types/api";
 import type { TMDBTimeWindow } from "@/types/tmdb";
 import { cacheConfig } from "@/utils/constants/cache";
@@ -14,7 +15,6 @@ import {
     getPopularMovies,
     getSimilarMovies,
     getTopRatedMovies,
-    getTrendingMovies,
     getUpcomingMovies,
 } from "../functions";
 
@@ -28,33 +28,38 @@ export const movieQueryOptions = (params: GetMoviesInput) =>
 export const trendingMoviesQueryOptions = (timeWindow: TMDBTimeWindow) =>
     queryOptions({
         queryKey: [...queryKeys.movies.trending(timeWindow)],
-        queryFn: () => getTrendingMovies({ data: { time_window: timeWindow } }),
+        queryFn: () =>
+            getTrending({ data: { mediaType: "movie", timeWindow } }),
         ...cacheConfig.short,
     });
 
-export const topRatedMoviesQueryOptions = queryOptions({
-    queryKey: [...queryKeys.movies.topRated()],
-    queryFn: () => getTopRatedMovies(),
-    ...cacheConfig.short,
-});
+export const topRatedMoviesQueryOptions = () =>
+    queryOptions({
+        queryKey: [...queryKeys.movies.topRated()],
+        queryFn: () => getTopRatedMovies(),
+        ...cacheConfig.short,
+    });
 
-export const popularMoviesQueryOptions = queryOptions({
-    queryKey: [...queryKeys.movies.popular()],
-    queryFn: () => getPopularMovies(),
-    ...cacheConfig.short,
-});
+export const popularMoviesQueryOptions = () =>
+    queryOptions({
+        queryKey: [...queryKeys.movies.popular()],
+        queryFn: () => getPopularMovies(),
+        ...cacheConfig.short,
+    });
 
-export const upcomingMoviesQueryOptions = queryOptions({
-    queryKey: [...queryKeys.movies.upcoming()],
-    queryFn: () => getUpcomingMovies(),
-    ...cacheConfig.short,
-});
+export const upcomingMoviesQueryOptions = () =>
+    queryOptions({
+        queryKey: [...queryKeys.movies.upcoming()],
+        queryFn: () => getUpcomingMovies(),
+        ...cacheConfig.short,
+    });
 
-export const nowPlayingMoviesQueryOptions = queryOptions({
-    queryKey: [...queryKeys.movies.nowPlaying()],
-    queryFn: () => getNowPlayingMovies(),
-    ...cacheConfig.short,
-});
+export const nowPlayingMoviesQueryOptions = () =>
+    queryOptions({
+        queryKey: [...queryKeys.movies.nowPlaying()],
+        queryFn: () => getNowPlayingMovies(),
+        ...cacheConfig.short,
+    });
 
 export const movieDetailQueryOptions = (id: number) =>
     queryOptions({
@@ -98,8 +103,9 @@ export const movieRecommendationsQueryOptions = (id: number) =>
         ...cacheConfig.medium,
     });
 
-export const movieGenresQueryOptions = queryOptions({
-    queryKey: [...queryKeys.movies.genres()],
-    queryFn: () => getMovieGenres(),
-    ...cacheConfig.veryLong,
-});
+export const movieGenresQueryOptions = () =>
+    queryOptions({
+        queryKey: [...queryKeys.movies.genres()],
+        queryFn: () => getMovieGenres(),
+        ...cacheConfig.veryLong,
+    });
