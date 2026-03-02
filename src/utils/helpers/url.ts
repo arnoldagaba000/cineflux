@@ -1,4 +1,5 @@
-import { DEFAULT_LANGUAGE, TMDB_BASE_URL } from "../constants/tmdb";
+const TMDB_BASE_URL = process.env.TMDB_BASE_URL!;
+const DEFAULT_LANGUAGE = process.env.DEFAULT_LANGUAGE!;
 
 /**
  * Builds a query string from a given object of key-value pairs.
