@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import FeaturedHero from "@/components/shared/featured-hero";
+import FeaturedHeroFallback from "@/components/shared/featured-hero-fallback";
 import {
     popularMoviesQueryOptions,
     topRatedMoviesQueryOptions,
@@ -67,7 +68,7 @@ function HomePage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<FeaturedHeroFallback />}>
                 <FeaturedHero items={heroItems} />
             </Suspense>
         </div>

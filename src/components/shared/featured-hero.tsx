@@ -28,7 +28,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     if (!items) {
-        return;
+        return null;
     }
     const featured = items.slice(0, 5);
     const current = featured[activeIndex];
@@ -171,7 +171,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                     </div>
 
                     <Button
-                        aria-label="Previous"
+                        aria-label="Next"
                         className="rounded-full"
                         onClick={() =>
                             setActiveIndex((i) =>
