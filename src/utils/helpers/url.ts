@@ -1,4 +1,5 @@
-import { DEFAULT_LANGUAGE, TMDB_BASE_URL } from "../constants/tmdb";
+const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
+const DEFAULT_LANGUAGE = process.env.DEFAULT_LANGUAGE ?? "en-US";
 
 /**
  * Builds a query string from a given object of key-value pairs.
@@ -32,6 +33,10 @@ export function buildTMDBUrl(
     endpoint: string,
     params?: Record<string, string | number | boolean | undefined>
 ): string {
+    if (!TMDB_BASE_URL) {
+        throw new Error("Missing TMDB_BASE_URL environment variable");
+    }
+    
     const normalisedBase = TMDB_BASE_URL.endsWith("/")
         ? TMDB_BASE_URL
         : `${TMDB_BASE_URL}/`;
