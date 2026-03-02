@@ -1,4 +1,5 @@
 import { SearchIcon } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -18,6 +19,16 @@ const SearchBar = ({
     autoFocus = false,
     variant = "inline",
 }: SearchBarProps) => {
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (!autoFocus) {
+            return;
+        }
+
+        inputRef.current?.focus();
+    }, [autoFocus]);
+
     return (
         <div className={cn("relative", className)}>
             <div className="relative flex items-center">
@@ -27,10 +38,18 @@ const SearchBar = ({
                 />
 
                 <Input
-                    autoFocus={autoFocus}
-                    className="mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm"
+                    className={cn(
+                        "mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm",
+                        variant === "modal" && "h-11 text-base"
+                    )}
                     id="navbar-search"
+                    onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                            onClose();
+                        }
+                    }}
                     placeholder={placeholder}
+                    ref={inputRef}
                     type="search"
                 />
                 <Label className="sr-only" htmlFor="navbar-search">

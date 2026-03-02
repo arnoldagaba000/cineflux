@@ -1,8 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
+import CarouselSkeleton from "@/components/shared/carousel-skeleton";
 import FeaturedHero from "@/components/shared/featured-hero";
 import FeaturedHeroFallback from "@/components/shared/featured-hero-fallback";
+import TrendingCarousel from "@/components/shared/trending-carousel";
 import {
     popularMoviesQueryOptions,
     topRatedMoviesQueryOptions,
@@ -12,6 +14,7 @@ import {
     popularTVShowsQueryOptions,
     topRatedTVShowsQueryOptions,
 } from "@/features/tv-shows/queries";
+import type { NormalizedMedia } from "@/types/ui";
 import {
     normalizeMovie,
     normalizeTrendingItem,
@@ -57,7 +60,9 @@ function HomePage() {
     );
 
     const trendingItems =
-        trending.results.map(normalizeTrendingItem).filter(Boolean) ?? [];
+        trending.results
+            .map(normalizeTrendingItem)
+            .filter((item): item is NormalizedMedia => item !== null) ?? [];
     const popularMovies = popularMoviesData.results.map(normalizeMovie) ?? [];
     const topRatedMovies = topRatedMoviesData.results.map(normalizeMovie) ?? [];
     const popularTVShows = popularTVShowsData.results.map(normalizeTV) ?? [];
@@ -71,6 +76,44 @@ function HomePage() {
             <Suspense fallback={<FeaturedHeroFallback />}>
                 <FeaturedHero items={heroItems} />
             </Suspense>
+
+            {/* Content sections */}
+            <div className="mx-auto max-w-screen-2xl space-y-14 px-4 py-12 md:px-8 lg:px-12">
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={trendingItems}
+                        title="Trending this week"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={popularMovies}
+                        title="Popular Movies"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={topRatedMovies}
+                        title="Top Rated Movies"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={popularTVShows}
+                        title="Popular TV Shows"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={topRatedTVShows}
+                        title="Top Rated TV Shows"
+                    />
+                </Suspense>
+            </div>
         </div>
     );
 }
