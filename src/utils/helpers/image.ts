@@ -1,5 +1,8 @@
 import type { TMDBImageSize } from "@/types/tmdb";
-import { TMDB_IMAGE_BASE_URL } from "../constants/tmdb";
+
+const DEFAULT_TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+const TMDB_IMAGE_BASE_URL =
+    import.meta.env.VITE_TMDB_IMAGE_BASE_URL ?? DEFAULT_TMDB_IMAGE_BASE_URL;
 
 /**
  * Builds a URL for a given image path and size.
@@ -16,7 +19,11 @@ export function buildImageUrl(
         return null;
     }
 
-    return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
+    const normalizedBaseUrl = TMDB_IMAGE_BASE_URL.endsWith("/")
+        ? TMDB_IMAGE_BASE_URL.slice(0, -1)
+        : TMDB_IMAGE_BASE_URL;
+
+    return `${normalizedBaseUrl}/${size}${path}`;
 }
 
 /**
