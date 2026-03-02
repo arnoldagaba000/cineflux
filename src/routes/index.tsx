@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
+import CarouselSkeleton from "@/components/shared/carousel-skeleton";
 import FeaturedHero from "@/components/shared/featured-hero";
 import FeaturedHeroFallback from "@/components/shared/featured-hero-fallback";
 import TrendingCarousel from "@/components/shared/trending-carousel";
@@ -18,7 +19,6 @@ import {
     normalizeTrendingItem,
     normalizeTV,
 } from "@/utils/helpers/normalizers";
-import CarouselSkeleton from "@/components/shared/carousel-skeleton";
 
 export const Route = createFileRoute("/")({
     component: HomePage,
@@ -80,6 +80,34 @@ function HomePage() {
                     <TrendingCarousel
                         items={trendingItems}
                         title="Trending this week"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={popularMovies}
+                        title="Popular Movies"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={topRatedMovies}
+                        title="Top Rated Movies"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={popularTVShows}
+                        title="Popular TV Shows"
+                    />
+                </Suspense>
+
+                <Suspense fallback={<CarouselSkeleton />}>
+                    <TrendingCarousel
+                        items={topRatedTVShows}
+                        title="Top Rated TV Shows"
                     />
                 </Suspense>
             </div>
