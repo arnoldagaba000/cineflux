@@ -14,6 +14,7 @@ import {
     popularTVShowsQueryOptions,
     topRatedTVShowsQueryOptions,
 } from "@/features/tv-shows/queries";
+import type { NormalizedMedia } from "@/types/ui";
 import {
     normalizeMovie,
     normalizeTrendingItem,
@@ -59,7 +60,9 @@ function HomePage() {
     );
 
     const trendingItems =
-        trending.results.map(normalizeTrendingItem).filter(Boolean) ?? [];
+        trending.results
+            .map(normalizeTrendingItem)
+            .filter((item): item is NormalizedMedia => item !== null) ?? [];
     const popularMovies = popularMoviesData.results.map(normalizeMovie) ?? [];
     const topRatedMovies = topRatedMoviesData.results.map(normalizeMovie) ?? [];
     const popularTVShows = popularTVShowsData.results.map(normalizeTV) ?? [];

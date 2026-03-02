@@ -28,8 +28,16 @@ const SearchBar = ({
 
                 <Input
                     autoFocus={autoFocus}
-                    className="mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm"
+                    className={cn(
+                        "mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm",
+                        variant === "modal" && "h-11 text-base"
+                    )}
                     id="navbar-search"
+                    onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                            onClose();
+                        }
+                    }}
                     placeholder={placeholder}
                     type="search"
                 />
