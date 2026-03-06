@@ -43,7 +43,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
     return (
         <section
             className={cn(
-                "relative h-[75vh] min-h-125 overflow-hidden",
+                "relative h-[62vh] min-h-[28rem] overflow-hidden sm:h-[70vh] sm:min-h-[32rem] lg:h-[75vh] lg:min-h-[38rem]",
                 className
             )}
         >
@@ -73,10 +73,10 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
             ))}
 
             {/* Content */}
-            <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 md:px-12 lg:px-20">
-                <div className="max-w-2xl">
+            <div className="relative z-10 flex h-full flex-col justify-end px-4 pb-12 sm:px-6 sm:pb-14 md:px-12 md:pb-16 lg:px-20">
+                <div className="max-w-xl sm:max-w-2xl">
                     {/** Meta */}
-                    <div className="mb-4 flex items-center gap-3">
+                    <div className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 sm:mb-4 sm:gap-3">
                         <span className="flex items-center gap-1.5 font-semibold text-amber-400 text-xs uppercase tracking-widest">
                             {isMovie ? (
                                 <FilmIcon size={12} />
@@ -100,7 +100,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                     </div>
 
                     {/* Title */}
-                    <h1 className="mb-4 font-black text-3xl text-white leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                    <h1 className="mb-3 font-black text-2xl text-white leading-tight tracking-tight sm:mb-4 sm:text-4xl lg:text-6xl">
                         {current.title}
                     </h1>
 
@@ -110,11 +110,11 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                     </p>
 
                     {/* Actions */}
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3 pb-3 md:pb-0">
                         <Link
                             className={buttonVariants({
                                 variant: "default",
-                                className: "p-5",
+                                className: "h-10 px-4 sm:p-5",
                             })}
                             to={href}
                         >
@@ -125,7 +125,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                         <Link
                             className={buttonVariants({
                                 variant: "outline",
-                                className: "p-5",
+                                className: "h-10 px-4 sm:p-5",
                             })}
                             to={href}
                         >
@@ -138,10 +138,10 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                 </div>
 
                 {/* Slide Indicators & Navigation */}
-                <div className="absolute right-6 bottom-8 flex items-center gap-3 md:right-12 lg:right-20">
+                <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-2 px-4 sm:inset-x-auto sm:right-6 sm:bottom-8 sm:justify-start sm:gap-3 sm:px-0 md:right-12 lg:right-20">
                     <Button
                         aria-label="Previous"
-                        className="rounded-full"
+                        className="size-8 rounded-full sm:size-9"
                         onClick={() =>
                             setActiveIndex((i) =>
                                 i === 0 ? featured.length - 1 : i - 1
@@ -159,7 +159,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
                                 className={cn(
                                     "h-1.5 rounded-full transition-all duration-300",
                                     i === activeIndex
-                                        ? "w-6 bg-amber-500"
+                                        ? "w-5 bg-amber-500 sm:w-6"
                                         : "w-1.5 bg-white/30 hover:bg-white/50"
                                 )}
                                 key={`${item.mediaType}-${item.id}`}
@@ -171,7 +171,7 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
 
                     <Button
                         aria-label="Next"
-                        className="rounded-full"
+                        className="size-8 rounded-full sm:size-9"
                         onClick={() =>
                             setActiveIndex((i) =>
                                 i === featured.length - 1 ? 0 : i + 1

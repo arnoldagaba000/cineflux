@@ -110,7 +110,7 @@ const Navbar = () => {
                         : "bg-linear-to-b from-sidebar to-transparent"
                 )}
             >
-                <nav className="items-center-safe mx-auto flex h-16 max-w-full justify-between px-4 md:px-8 lg:px-12">
+                <nav className="items-center-safe mx-auto flex h-14 max-w-full justify-between px-4 sm:h-16 md:px-8 lg:px-12">
                     {/* Logo */}
                     <Link className="group flex items-center gap-2" to="/">
                         <div className="flex size-9 items-center justify-center rounded-xl bg-amber-500 shadow-amber-500/30 shadow-lg transition-colors group-hover:bg-amber-400">
@@ -148,11 +148,11 @@ const Navbar = () => {
                     </div>
 
                     {/* Right Actions */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                         <Button
                             aria-label="Toggle search"
                             aria-pressed={isSearchOpen}
-                            className="flex size-9 items-center justify-center transition-all"
+                            className="flex size-8 items-center justify-center transition-all sm:size-9"
                             onClick={() => setIsSearchOpen(!isSearchOpen)}
                             variant="secondary"
                         >
@@ -166,7 +166,7 @@ const Navbar = () => {
                         {/* Mobile Nav Toggle */}
                         <Button
                             aria-label="Toggle menu"
-                            className="flex size-9 items-center justify-center transition-all md:hidden"
+                            className="flex size-8 items-center justify-center transition-all sm:size-9 md:hidden"
                             onClick={() => setMobileOpen(!mobileOpen)}
                             ref={mobileToggleRef}
                             variant="secondary"
@@ -181,7 +181,7 @@ const Navbar = () => {
                 </nav>
 
                 {isSearchOpen && (
-                    <div className="border-sidebar-border border-t px-4 pb-4 md:px-8 lg:px-12">
+                    <div className="border-sidebar-border border-t px-4 pb-3 sm:pb-4 md:px-8 lg:px-12">
                         <div className="mx-auto max-w-2xl">
                             <SearchBar
                                 onClose={() => setIsSearchOpen(false)}
@@ -195,7 +195,7 @@ const Navbar = () => {
             {/* Mobile Navigation */}
             {mobileOpen && (
                 <div
-                    className="fixed inset-x-0 top-16 z-40 border-sidebar-border border-b bg-sidebar/95 px-4 py-3 shadow-xl backdrop-blur-md md:hidden"
+                    className="fixed inset-x-0 top-14 z-40 max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-sidebar-border border-b bg-sidebar/95 px-4 py-3 shadow-xl backdrop-blur-md sm:top-16 sm:max-h-[calc(100dvh-4rem)] md:hidden"
                     ref={mobileMenuRef}
                 >
                     <div className="mx-auto flex max-w-full flex-col gap-1">

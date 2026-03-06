@@ -39,8 +39,9 @@ const SearchBar = ({
 
                 <Input
                     className={cn(
-                        "mt-3 h-10 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm",
-                        variant === "modal" && "h-11 text-base"
+                        "mt-2 h-9 rounded-md border border-sidebar-border bg-sidebar px-3 pl-10 text-sm sm:mt-3 sm:h-10",
+                        variant === "modal" &&
+                            "h-10 text-sm sm:h-11 sm:text-base"
                     )}
                     id="navbar-search"
                     onKeyDown={(event) => {
