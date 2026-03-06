@@ -65,9 +65,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                             <div className="flex min-h-screen flex-col scroll-smooth">
                                 <Navbar />
 
-                                <main className="flex-1 px-4 pt-3">
-                                    {children}
-                                </main>
+                                <main className="flex-1 pt-3">{children}</main>
                             </div>
                         </TooltipProvider>
                     </ThemeProvider>

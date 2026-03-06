@@ -78,7 +78,7 @@ function HomePage() {
             </Suspense>
 
             {/* Content sections */}
-            <div className="mx-auto max-w-screen-2xl space-y-14 px-4 py-12 md:px-8 lg:px-12">
+            <div className="mx-auto max-w-screen-2xl space-y-8 px-4 py-8 sm:space-y-10 sm:py-10 md:space-y-12 md:px-8 md:py-12 lg:space-y-14 lg:px-12">
                 <Suspense fallback={<CarouselSkeleton />}>
                     <TrendingCarousel
                         items={trendingItems}

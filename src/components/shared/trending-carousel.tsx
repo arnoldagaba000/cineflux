@@ -42,9 +42,9 @@ const TrendingCarousel = ({
             className={cn("relative", className)}
         >
             {/* Header */}
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between sm:mb-5">
                 <h2
-                    className="font-black text-white text-xl tracking-tight sm:text-2xl"
+                    className="font-black text-lg text-white tracking-tight sm:text-2xl"
                     id="trending-carousel-title"
                 >
                     {title}
@@ -53,7 +53,7 @@ const TrendingCarousel = ({
                 <div className="flex gap-2">
                     <Button
                         aria-label="Scroll left"
-                        className="h-8 w-8 rounded-full border border-zinc-700 bg-zinc-800 text-zinc-400 transition-all duration-150 hover:bg-zinc-700 hover:text-white"
+                        className="size-7 rounded-full border border-zinc-700 bg-zinc-800 text-zinc-400 transition-all duration-150 hover:bg-zinc-700 hover:text-white sm:size-8"
                         onClick={() => scroll("left")}
                         size="icon"
                         variant="ghost"
@@ -63,7 +63,7 @@ const TrendingCarousel = ({
 
                     <Button
                         aria-label="Scroll right"
-                        className="h-8 w-8 rounded-full border border-zinc-700 bg-zinc-800 text-zinc-400 transition-all duration-150 hover:bg-zinc-700 hover:text-white"
+                        className="size-7 rounded-full border border-zinc-700 bg-zinc-800 text-zinc-400 transition-all duration-150 hover:bg-zinc-700 hover:text-white sm:size-8"
                         onClick={() => scroll("right")}
                         size="icon"
                         variant="ghost"
@@ -79,7 +79,7 @@ const TrendingCarousel = ({
                     {/* The inner element to be controlled */}
                     <ul
                         aria-label={`${title} items`}
-                        className="flex gap-4 overflow-x-auto scroll-smooth px-0 pb-2"
+                        className="flex gap-3 overflow-x-auto scroll-smooth px-0 pb-3 sm:gap-4"
                         ref={scrollRef}
                         style={{
                             scrollbarWidth: "none",
@@ -88,7 +88,7 @@ const TrendingCarousel = ({
                     >
                         {items.map((media, index) => (
                             <li
-                                className="w-40 shrink-0 sm:w-45"
+                                className="w-[8.5rem] shrink-0 sm:w-40 md:w-45"
                                 key={`${media.mediaType}-${media.id}`}
                             >
                                 <MediaCard
@@ -102,7 +102,7 @@ const TrendingCarousel = ({
                 </ScrollArea>
 
                 {/* Fade edges */}
-                <div className="pointer-events-none absolute top-0 right-0 bottom-2 w-16 bg-linear-to-l from-zinc-950 to-transparent" />
+                <div className="pointer-events-none absolute top-0 right-0 bottom-2 w-8 bg-linear-to-l from-zinc-950 to-transparent sm:w-16" />
             </div>
         </section>
     );

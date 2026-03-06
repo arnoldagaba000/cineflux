@@ -147,10 +147,10 @@ const MediaCard = ({
     return (
         <Link
             className={cn(
-                "group relative flex h-87.5 flex-col overflow-hidden rounded-xl transition-all duration-300",
+                "group relative flex h-full flex-col overflow-hidden rounded-xl transition-all duration-300",
                 "border border-zinc-800/80 bg-zinc-900",
                 "hover:border-amber-500/30 hover:shadow-amber-500/10 hover:shadow-xl",
-                "hover:-translate-y-1",
+                "sm:hover:-translate-y-1",
                 className
             )}
             to={href}
@@ -159,7 +159,7 @@ const MediaCard = ({
             <div className="relative aspect-2/3 overflow-hidden bg-zinc-950">
                 <ImageWithFallback
                     alt={media.title}
-                    className="h-full w-full transition-transform duration-500 group-hover:scale-105"
+                    className="h-full w-full transition-transform duration-500 sm:group-hover:scale-105"
                     priority={priority}
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                     src={buildPosterUrl(media.posterPath, "w342")}
@@ -197,8 +197,8 @@ const MediaCard = ({
             </div>
 
             {/* Info */}
-            <div className="flex flex-col gap-1.5 p-3">
-                <h3 className="line-clamp-2 font-bold text-sm text-white leading-tight transition-colors group-hover:text-amber-400">
+            <div className="flex flex-col gap-1.5 p-2.5 sm:p-3">
+                <h3 className="line-clamp-2 font-bold text-white text-xs leading-tight transition-colors group-hover:text-amber-400 sm:text-sm">
                     {media.title}
                 </h3>
 
