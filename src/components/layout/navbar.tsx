@@ -35,6 +35,7 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const searchPanelId = "navbar-search-panel";
     const mobileMenuRef = useRef<HTMLDivElement | null>(null);
     const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
 
@@ -150,8 +151,9 @@ const Navbar = () => {
                     {/* Right Actions */}
                     <div className="flex items-center gap-1.5 sm:gap-2">
                         <Button
+                            aria-controls={searchPanelId}
+                            aria-expanded={isSearchOpen}
                             aria-label="Toggle search"
-                            aria-pressed={isSearchOpen}
                             className="flex size-8 items-center justify-center transition-all sm:size-9"
                             onClick={() => setIsSearchOpen(!isSearchOpen)}
                             variant="secondary"
@@ -181,7 +183,10 @@ const Navbar = () => {
                 </nav>
 
                 {isSearchOpen && (
-                    <div className="border-sidebar-border border-t px-4 pb-3 sm:pb-4 md:px-8 lg:px-12">
+                    <div
+                        className="border-sidebar-border border-t px-4 pb-3 sm:pb-4 md:px-8 lg:px-12"
+                        id={searchPanelId}
+                    >
                         <div className="mx-auto max-w-2xl">
                             <SearchBar
                                 onClose={() => setIsSearchOpen(false)}
