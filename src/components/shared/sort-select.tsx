@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { SortOption } from "@/types/ui";
+import { Field, FieldTitle } from "../ui/field";
 import {
     Select,
     SelectContent,
@@ -42,7 +43,8 @@ const SortSelect = ({
     );
 
     return (
-        <div className={cn("relative", className)}>
+        <Field className={cn("gap-0", className)} orientation="vertical">
+            <FieldTitle className="sr-only">Sort results</FieldTitle>
             <Select
                 onValueChange={(nextValue) => {
                     if (optionValues.has(nextValue as SortOption)) {
@@ -52,7 +54,6 @@ const SortSelect = ({
                 value={value}
             >
                 <SelectTrigger
-                    // keep visual appearance similar to your original styling
                     aria-label="Sort"
                     className={cn(
                         "h-9 w-full appearance-none rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2 pr-10 text-sm text-white sm:h-10 sm:px-4",
@@ -71,7 +72,7 @@ const SortSelect = ({
                     ))}
                 </SelectContent>
             </Select>
-        </div>
+        </Field>
     );
 };
 

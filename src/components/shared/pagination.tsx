@@ -1,10 +1,11 @@
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    MoreHorizontalIcon,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import {
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    Pagination as UIPagination,
+} from "../ui/pagination";
 
 interface PaginationProps {
     className?: string;
@@ -46,68 +47,75 @@ const Pagination = ({
             ellipsisCount += 1;
 
             return (
-                <span
-                    className="flex h-8 w-8 items-center justify-center text-zinc-600 sm:h-9 sm:w-9"
-                    key={`ellipsis-${ellipsisCount}`}
-                >
-                    <MoreHorizontalIcon size={16} />
-                </span>
+                <PaginationItem key={`ellipsis-${ellipsisCount}`}>
+                    <PaginationEllipsis className="text-zinc-600" />
+                </PaginationItem>
             );
         }
 
         return (
-            <Button
-                aria-current={page === currentPage ? "page" : undefined}
-                aria-label={`Page ${page}`}
-                className={
-                    page === currentPage
-                        ? "h-8 min-w-8 border-amber-500 bg-amber-500 px-2 font-bold text-zinc-900 sm:h-9 sm:min-w-9"
-                        : "h-8 min-w-8 border-zinc-700 px-2 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:h-9 sm:min-w-9"
-                }
-                key={page}
-                onClick={() => onPageChange(page as number)}
-            >
-                {page}
-            </Button>
+            <PaginationItem key={page}>
+                <Button
+                    aria-current={page === currentPage ? "page" : undefined}
+                    aria-label={`Page ${page}`}
+                    className={
+                        page === currentPage
+                            ? "h-8 min-w-8 border-amber-500 bg-amber-500 px-2 font-bold text-zinc-900 sm:h-9 sm:min-w-9"
+                            : "h-8 min-w-8 border-zinc-700 px-2 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:h-9 sm:min-w-9"
+                    }
+                    onClick={() => onPageChange(page)}
+                    variant="outline"
+                >
+                    {page}
+                </Button>
+            </PaginationItem>
         );
     });
 
     return (
-        <nav
+        <UIPagination
             aria-label="Pagination"
             className={cn(
                 "flex flex-wrap items-center justify-center gap-1 sm:gap-1.5",
                 className
             )}
         >
-            <Button
-                aria-label="Previous page"
-                className={
-                    currentPage === 1
-                        ? "h-8 min-w-8 cursor-not-allowed border-zinc-800 px-2 text-zinc-700 sm:h-9 sm:min-w-9"
-                        : "h-8 min-w-8 border-zinc-700 px-2 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:h-9 sm:min-w-9"
-                }
-                disabled={currentPage === 1}
-                onClick={() => onPageChange(currentPage - 1)}
-            >
-                <ChevronLeftIcon size={16} />
-            </Button>
+            <PaginationContent className="flex-wrap justify-center gap-1 sm:gap-1.5">
+                <PaginationItem>
+                    <Button
+                        aria-label="Previous page"
+                        className={
+                            currentPage === 1
+                                ? "h-8 min-w-8 cursor-not-allowed border-zinc-800 px-2 text-zinc-700 sm:h-9 sm:min-w-9"
+                                : "h-8 min-w-8 border-zinc-700 px-2 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:h-9 sm:min-w-9"
+                        }
+                        disabled={currentPage === 1}
+                        onClick={() => onPageChange(currentPage - 1)}
+                        variant="outline"
+                    >
+                        Prev
+                    </Button>
+                </PaginationItem>
 
-            {pageItems}
+                {pageItems}
 
-            <Button
-                aria-label="Next page"
-                className={
-                    currentPage === totalPages
-                        ? "h-8 min-w-8 cursor-not-allowed border-zinc-800 px-2 text-zinc-700 sm:h-9 sm:min-w-9"
-                        : "h-8 min-w-8 border-zinc-700 px-2 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:h-9 sm:min-w-9"
-                }
-                disabled={currentPage === totalPages}
-                onClick={() => onPageChange(currentPage + 1)}
-            >
-                <ChevronRightIcon size={16} />
-            </Button>
-        </nav>
+                <PaginationItem>
+                    <Button
+                        aria-label="Next page"
+                        className={
+                            currentPage === totalPages
+                                ? "h-8 min-w-8 cursor-not-allowed border-zinc-800 px-2 text-zinc-700 sm:h-9 sm:min-w-9"
+                                : "h-8 min-w-8 border-zinc-700 px-2 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-800 hover:text-white sm:h-9 sm:min-w-9"
+                        }
+                        disabled={currentPage === totalPages}
+                        onClick={() => onPageChange(currentPage + 1)}
+                        variant="outline"
+                    >
+                        Next
+                    </Button>
+                </PaginationItem>
+            </PaginationContent>
+        </UIPagination>
     );
 };
 

@@ -1,6 +1,7 @@
 import { ClapperboardIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { NormalizedMedia } from "@/types/ui";
+import { Card, CardContent } from "../ui/card";
 import MediaCard from "./media-card";
 import MediaCardSkeleton from "./media-card-skeleton";
 
@@ -44,18 +45,20 @@ const MediaGrid = ({
 
     if (items.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 text-center sm:py-24">
-                <div className="mb-4 rounded-full border border-zinc-800 bg-zinc-900 p-3 text-zinc-400">
-                    <ClapperboardIcon size={28} />
-                </div>
-                <h3 className="mb-2 font-semibold text-lg text-zinc-300 sm:text-xl">
-                    No results found
-                </h3>
-                <p className="max-w-md text-sm text-zinc-500">
-                    Try adjusting your search or filters to find what you're
-                    looking for.
-                </p>
-            </div>
+            <Card className="bg-zinc-900/70 py-0">
+                <CardContent className="flex flex-col items-center justify-center px-4 py-16 text-center sm:py-20">
+                    <div className="mb-4 rounded-full border border-zinc-800 bg-zinc-900 p-3 text-zinc-400">
+                        <ClapperboardIcon size={28} />
+                    </div>
+                    <h3 className="mb-2 font-semibold text-lg text-zinc-300 sm:text-xl">
+                        No results found
+                    </h3>
+                    <p className="max-w-md text-sm text-zinc-500">
+                        Try adjusting your search or filters to find what
+                        you&apos;re looking for.
+                    </p>
+                </CardContent>
+            </Card>
         );
     }
 
