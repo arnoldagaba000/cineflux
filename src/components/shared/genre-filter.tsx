@@ -17,44 +17,51 @@ const GenreFilter = ({
     className,
 }: GenreFilterProps) => {
     return (
-        <FieldSet className={cn("gap-1.5", className)}>
+        <FieldSet
+            className={cn(
+                "w-full min-w-0 gap-1.5 [min-inline-size:0]",
+                className
+            )}
+        >
             <FieldLegend className="sr-only">Filter by genre</FieldLegend>
-            <div
-                className="scrollbar-hide flex gap-2 overflow-x-auto pb-1"
-                style={{ scrollbarWidth: "none" }}
-            >
-                <Button
-                    aria-pressed={selectedGenre === null}
-                    className={
-                        selectedGenre === null
-                            ? "h-8 shrink-0 rounded-full bg-amber-500 px-3 font-bold text-zinc-900 sm:h-9"
-                            : "h-8 shrink-0 rounded-full border border-zinc-700 bg-zinc-800 px-3 text-zinc-400 hover:bg-zinc-700 hover:text-white"
-                    }
-                    onClick={() => onGenreChange(null)}
-                    variant="secondary"
+            <div className="w-full min-w-0 overflow-hidden">
+                <div
+                    className="scrollbar-hide flex w-full min-w-0 max-w-full gap-2 overflow-x-auto pb-1"
+                    style={{ scrollbarWidth: "none" }}
                 >
-                    All
-                </Button>
-
-                {genres.map((genre) => (
                     <Button
-                        aria-pressed={selectedGenre === genre.id}
+                        aria-pressed={selectedGenre === null}
                         className={
-                            selectedGenre === genre.id
+                            selectedGenre === null
                                 ? "h-8 shrink-0 rounded-full bg-amber-500 px-3 font-bold text-zinc-900 sm:h-9"
                                 : "h-8 shrink-0 rounded-full border border-zinc-700 bg-zinc-800 px-3 text-zinc-400 hover:bg-zinc-700 hover:text-white"
                         }
-                        key={genre.id}
-                        onClick={() =>
-                            onGenreChange(
-                                selectedGenre === genre.id ? null : genre.id
-                            )
-                        }
+                        onClick={() => onGenreChange(null)}
                         variant="secondary"
                     >
-                        {genre.name}
+                        All
                     </Button>
-                ))}
+
+                    {genres.map((genre) => (
+                        <Button
+                            aria-pressed={selectedGenre === genre.id}
+                            className={
+                                selectedGenre === genre.id
+                                    ? "h-8 shrink-0 rounded-full bg-amber-500 px-3 font-bold text-zinc-900 sm:h-9"
+                                    : "h-8 shrink-0 rounded-full border border-zinc-700 bg-zinc-800 px-3 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                            }
+                            key={genre.id}
+                            onClick={() =>
+                                onGenreChange(
+                                    selectedGenre === genre.id ? null : genre.id
+                                )
+                            }
+                            variant="secondary"
+                        >
+                            {genre.name}
+                        </Button>
+                    ))}
+                </div>
             </div>
         </FieldSet>
     );

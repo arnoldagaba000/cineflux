@@ -21,7 +21,6 @@ const movieSortOptions: { value: SortOption; label: string }[] = [
     { value: "vote_average.desc", label: "Highest Rated" },
     { value: "release_date.desc", label: "Newest First" },
     { value: "release_date.asc", label: "Oldest First" },
-    { value: "vote_count.desc", label: "Most Voted" },
 ];
 
 const tvSortOptions: { value: SortOption; label: string }[] = [
@@ -41,6 +40,9 @@ const SortSelect = ({
     const optionValues = new Set(
         options.map(({ value: optionValue }) => optionValue)
     );
+    const selectedLabel =
+        options.find((option) => option.value === value)?.label ??
+        "Most Popular";
 
     return (
         <Field className={cn("gap-0", className)} orientation="vertical">
@@ -61,7 +63,7 @@ const SortSelect = ({
                         "cursor-pointer hover:border-zinc-600"
                     )}
                 >
-                    <SelectValue />
+                    <SelectValue>{selectedLabel}</SelectValue>
                 </SelectTrigger>
 
                 <SelectContent>
