@@ -22,7 +22,7 @@ function FallbackShell({
     eyebrow: string;
 }) {
     return (
-        <main className="relative flex min-h-[calc(100dvh-4rem)] items-center justify-center overflow-hidden px-4 py-10 sm:px-6">
+        <div className="relative flex min-h-[calc(100dvh-4rem)] items-center justify-center overflow-hidden px-4 py-10 sm:px-6">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.12),transparent_48%)]" />
             <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-zinc-900/40 via-zinc-950 to-zinc-950" />
 
@@ -33,7 +33,7 @@ function FallbackShell({
                 </div>
                 {children}
             </section>
-        </main>
+        </div>
     );
 }
 
