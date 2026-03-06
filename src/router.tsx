@@ -1,17 +1,20 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
+import {
+    ErrorFallback,
+    NotFoundFallback,
+} from "@/components/router/route-fallbacks";
 import { getContext } from "./integrations/react-query";
-
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
     const router = createTanStackRouter({
         routeTree,
-
         context: getContext(),
-
         scrollRestoration: true,
         defaultPreload: "intent",
+        defaultErrorComponent: ErrorFallback,
+        defaultNotFoundComponent: NotFoundFallback,
     });
 
     setupRouterSsrQueryIntegration({
