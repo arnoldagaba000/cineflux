@@ -5,9 +5,10 @@ import { ScrollArea } from "../ui/scroll-area";
 
 interface MovieMediaGalleryProps {
     images: TMDBImage[];
+    movieTitle?: string;
 }
 
-const MovieMediaGallery = ({ images }: MovieMediaGalleryProps) => {
+const MovieMediaGallery = ({ images, movieTitle }: MovieMediaGalleryProps) => {
     if (images.length === 0) {
         return null;
     }
@@ -34,7 +35,7 @@ const MovieMediaGallery = ({ images }: MovieMediaGalleryProps) => {
                             key={image.file_path}
                         >
                             <ImageWithFallback
-                                alt="Movie gallery image"
+                                alt={`Backdrop image for ${movieTitle || "this movie"}`}
                                 className="aspect-video w-full"
                                 src={buildBackdropUrl(image.file_path, "w780")}
                             />
