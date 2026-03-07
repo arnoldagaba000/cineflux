@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as MoviesIdRouteImport } from './routes/movies/$id'
 import { Route as AppBookmarksRouteImport } from './routes/_app/bookmarks'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const MoviesIndexRoute = MoviesIndexRouteImport.update({
   path: '/movies/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MoviesIdRoute = MoviesIdRouteImport.update({
+  id: '/movies/$id',
+  path: '/movies/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppBookmarksRoute = AppBookmarksRouteImport.update({
   id: '/_app/bookmarks',
   path: '/bookmarks',
@@ -38,12 +44,14 @@ const AppBookmarksRoute = AppBookmarksRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bookmarks': typeof AppBookmarksRoute
+  '/movies/$id': typeof MoviesIdRoute
   '/movies/': typeof MoviesIndexRoute
   '/tv/': typeof TvIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bookmarks': typeof AppBookmarksRoute
+  '/movies/$id': typeof MoviesIdRoute
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app/bookmarks': typeof AppBookmarksRoute
+  '/movies/$id': typeof MoviesIdRoute
   '/movies/': typeof MoviesIndexRoute
   '/tv/': typeof TvIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bookmarks' | '/movies/' | '/tv/'
+  fullPaths: '/' | '/bookmarks' | '/movies/$id' | '/movies/' | '/tv/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bookmarks' | '/movies' | '/tv'
-  id: '__root__' | '/' | '/_app/bookmarks' | '/movies/' | '/tv/'
+  to: '/' | '/bookmarks' | '/movies/$id' | '/movies' | '/tv'
+  id: '__root__' | '/' | '/_app/bookmarks' | '/movies/$id' | '/movies/' | '/tv/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppBookmarksRoute: typeof AppBookmarksRoute
+  MoviesIdRoute: typeof MoviesIdRoute
   MoviesIndexRoute: typeof MoviesIndexRoute
   TvIndexRoute: typeof TvIndexRoute
 }
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/movies/$id': {
+      id: '/movies/$id'
+      path: '/movies/$id'
+      fullPath: '/movies/$id'
+      preLoaderRoute: typeof MoviesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/bookmarks': {
       id: '/_app/bookmarks'
       path: '/bookmarks'
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppBookmarksRoute: AppBookmarksRoute,
+  MoviesIdRoute: MoviesIdRoute,
   MoviesIndexRoute: MoviesIndexRoute,
   TvIndexRoute: TvIndexRoute,
 }
