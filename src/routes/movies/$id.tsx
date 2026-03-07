@@ -49,6 +49,24 @@ const formatCurrency = (value: number) => {
     }).format(value);
 };
 
+const sanitizeHomepageUrl = (homepage: string | null) => {
+    if (!homepage) {
+        return null;
+    }
+
+    try {
+        const url = new URL(homepage);
+
+        if (url.protocol === "http:" || url.protocol === "https:") {
+            return url.toString();
+        }
+    } catch {
+        return null;
+    }
+
+    return null;
+};
+
 const getRelatedMovieRows = (
     movieId: number,
     recommendationResults: ReturnType<typeof normalizeMovie>[],
@@ -81,6 +99,8 @@ function MovieDetailActions({
     homepage: string | null;
     trailerUrl: string | null;
 }) {
+    const sanitizedHomepage = sanitizeHomepageUrl(homepage);
+
     return (
         <div className="flex flex-wrap items-center gap-3">
             {trailerUrl && (
@@ -98,14 +118,14 @@ function MovieDetailActions({
                     Watch Trailer
                 </a>
             )}
-            {homepage && (
+            {sanitizedHomepage && (
                 <a
                     className={buttonVariants({
                         size: "lg",
                         variant: "outline",
                         className: "rounded-xl",
                     })}
-                    href={homepage}
+                    href={sanitizedHomepage}
                     rel="noopener noreferrer"
                     target="_blank"
                 >
@@ -401,7 +421,10 @@ function MovieDetailPage() {
                         </Card>
                     )}
 
-                    <MovieMediaGallery images={galleryImages} />
+                    <MovieMediaGallery
+                        images={galleryImages}
+                        movieTitle={movie.title}
+                    />
                     {imagesError && galleryImages.length === 0 && (
                         <Card className="border border-zinc-800 bg-zinc-900/70 py-0">
                             <CardContent className="py-4 text-sm text-zinc-500">

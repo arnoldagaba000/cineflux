@@ -34,7 +34,9 @@ export function getYouTubeWatchUrl(videoKey: string | null | undefined) {
         return null;
     }
 
-    return `https://www.youtube.com/watch?v=${videoKey}`;
+    const sanitizedVideoKey = encodeURIComponent(videoKey);
+
+    return `https://www.youtube.com/watch?v=${sanitizedVideoKey}`;
 }
 
 export function getYouTubeEmbedUrl(videoKey: string | null | undefined) {
@@ -42,5 +44,7 @@ export function getYouTubeEmbedUrl(videoKey: string | null | undefined) {
         return null;
     }
 
-    return `https://www.youtube-nocookie.com/embed/${videoKey}`;
+    const sanitizedVideoKey = encodeURIComponent(videoKey);
+
+    return `https://www.youtube-nocookie.com/embed/${sanitizedVideoKey}`;
 }

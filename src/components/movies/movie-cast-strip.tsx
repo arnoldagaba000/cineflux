@@ -33,7 +33,7 @@ const MovieCastStrip = ({ cast }: MovieCastStripProps) => {
                     {cast.map((actor) => (
                         <li
                             className="w-32 shrink-0 snap-start rounded-2xl border border-zinc-800 bg-zinc-900/70 p-3 sm:w-36"
-                            key={actor.id}
+                            key={actor.credit_id ?? String(actor.id)}
                         >
                             <div className="mx-auto mb-3 aspect-square w-full overflow-hidden rounded-2xl bg-zinc-950">
                                 <ImageWithFallback
