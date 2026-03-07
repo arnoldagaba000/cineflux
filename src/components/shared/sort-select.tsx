@@ -30,6 +30,12 @@ const tvSortOptions: { value: TVSortOption; label: string }[] = [
     { value: "first_air_date.asc", label: "Oldest First" },
 ];
 
+const isMovieSortOption = (value: string): value is MovieSortOption =>
+    movieSortOptions.some((option) => option.value === value);
+
+const isTVSortOption = (value: string): value is TVSortOption =>
+    tvSortOptions.some((option) => option.value === value);
+
 const SortSelect = ({
     value,
     onChange,
@@ -37,9 +43,6 @@ const SortSelect = ({
     className,
 }: SortSelectProps) => {
     const options = type === "movie" ? movieSortOptions : tvSortOptions;
-    const optionValues = new Set(
-        options.map(({ value: optionValue }) => optionValue)
-    );
     const selectedLabel =
         options.find((option) => option.value === value)?.label ??
         "Most Popular";
@@ -49,8 +52,19 @@ const SortSelect = ({
             <FieldTitle className="sr-only">Sort results</FieldTitle>
             <Select
                 onValueChange={(nextValue) => {
-                    if (optionValues.has(nextValue as SortOption)) {
-                        onChange(nextValue as SortOption);
+                    if (!nextValue) {
+                        return;
+                    }
+
+                    if (type === "tv") {
+                        if (isTVSortOption(nextValue)) {
+                            onChange(nextValue);
+                        }
+                        return;
+                    }
+
+                    if (isMovieSortOption(nextValue)) {
+                        onChange(nextValue);
                     }
                 }}
                 value={value}
