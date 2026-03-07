@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { SortOption } from "@/types/ui";
+import type { MovieSortOption, SortOption, TVSortOption } from "@/types/ui";
 import { Field, FieldTitle } from "../ui/field";
 import {
     Select,
@@ -16,18 +16,18 @@ interface SortSelectProps {
     value: SortOption;
 }
 
-const movieSortOptions: { value: SortOption; label: string }[] = [
+const movieSortOptions: { value: MovieSortOption; label: string }[] = [
     { value: "popularity.desc", label: "Most Popular" },
     { value: "vote_average.desc", label: "Highest Rated" },
     { value: "release_date.desc", label: "Newest First" },
     { value: "release_date.asc", label: "Oldest First" },
 ];
 
-const tvSortOptions: { value: SortOption; label: string }[] = [
+const tvSortOptions: { value: TVSortOption; label: string }[] = [
     { value: "popularity.desc", label: "Most Popular" },
     { value: "vote_average.desc", label: "Highest Rated" },
-    { value: "release_date.desc", label: "Newest First" },
-    { value: "release_date.asc", label: "Oldest First" },
+    { value: "first_air_date.desc", label: "Newest First" },
+    { value: "first_air_date.asc", label: "Oldest First" },
 ];
 
 const SortSelect = ({

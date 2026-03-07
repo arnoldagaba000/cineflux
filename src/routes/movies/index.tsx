@@ -13,6 +13,19 @@ import {
 import type { SortOption } from "@/types/ui";
 import { normalizeMovie } from "@/utils/helpers/normalizers";
 
+const INITIAL_PAGE = 1;
+const INITIAL_SORT_BY: SortOption = "popularity.desc";
+
+const getMovieQueryParams = (
+    page: number,
+    selectedGenre: number | null,
+    sortBy: SortOption
+) => ({
+    page,
+    with_genres: selectedGenre ? String(selectedGenre) : undefined,
+    sort_by: sortBy,
+});
+
 export const Route = createFileRoute("/movies/")({
     component: MoviePage,
     head: () => ({
@@ -26,24 +39,24 @@ export const Route = createFileRoute("/movies/")({
     }),
     loader: async ({ context: { queryClient } }) => {
         await Promise.all([
-            queryClient.ensureQueryData(movieQueryOptions({})),
+            queryClient.ensureQueryData(
+                movieQueryOptions(
+                    getMovieQueryParams(INITIAL_PAGE, null, INITIAL_SORT_BY)
+                )
+            ),
             queryClient.ensureQueryData(movieGenresQueryOptions()),
         ]);
     },
 });
 
 function MoviePage() {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(INITIAL_PAGE);
     const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
-    const [sortBy, setSortBy] = useState<SortOption>("popularity.desc");
+    const [sortBy, setSortBy] = useState<SortOption>(INITIAL_SORT_BY);
 
     const { data: genresData } = useQuery(movieGenresQueryOptions());
     const { data, isFetching, isPending } = useQuery(
-        movieQueryOptions({
-            page,
-            with_genres: selectedGenre ? String(selectedGenre) : undefined,
-            sort_by: sortBy,
-        })
+        movieQueryOptions(getMovieQueryParams(page, selectedGenre, sortBy))
     );
 
     const movies = data?.results.map(normalizeMovie) ?? [];

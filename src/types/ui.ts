@@ -44,13 +44,23 @@ export interface SearchState {
 
 // ─── Filter Types ─────────────────────────────────────────────────────────────
 
-export type SortOption =
+export type MovieSortOption =
     | "popularity.desc"
     | "popularity.asc"
     | "release_date.desc"
     | "release_date.asc"
     | "vote_average.desc"
     | "vote_average.asc";
+
+export type TVSortOption =
+    | "popularity.desc"
+    | "popularity.asc"
+    | "first_air_date.desc"
+    | "first_air_date.asc"
+    | "vote_average.desc"
+    | "vote_average.asc";
+
+export type SortOption = MovieSortOption | TVSortOption;
 
 export interface FilterState {
     genre: number | null;
