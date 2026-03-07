@@ -17,21 +17,25 @@ import MovieMediaGallery from "@/components/movies/movie-media-gallery";
 import BadgeComp from "@/components/shared/badge-comp";
 import ImageWithFallback from "@/components/shared/image-with-fallback";
 import TrendingCarousel from "@/components/shared/trending-carousel";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
     getMovieImagesQueryOptions,
     movieCreditsQueryOptions,
     movieDetailQueryOptions,
     movieRecommendationsQueryOptions,
+    movieSimilarQueryOptions,
     movieVideosQueryOptions,
 } from "@/features/movies/queries";
 import { formatDate, formatRuntime, getYear } from "@/utils/helpers/date";
 import { buildBackdropUrl, buildPosterUrl } from "@/utils/helpers/image";
 import { normalizeMovie } from "@/utils/helpers/normalizers";
 import { formatRating } from "@/utils/helpers/rating";
-
-const TRAILER_TYPES = new Set(["Trailer", "Teaser"]);
+import {
+    getPreferredTrailer,
+    getYouTubeEmbedUrl,
+    getYouTubeWatchUrl,
+} from "@/utils/helpers/video";
 
 const formatCurrency = (value: number) => {
     if (value <= 0) {
@@ -45,22 +49,85 @@ const formatCurrency = (value: number) => {
     }).format(value);
 };
 
-const getPreferredTrailer = (
-    videos: { key: string; official: boolean; site: string; type: string }[]
+const getRelatedMovieRows = (
+    movieId: number,
+    recommendationResults: ReturnType<typeof normalizeMovie>[],
+    similarResults: ReturnType<typeof normalizeMovie>[]
 ) => {
-    return (
-        videos.find(
-            (video) =>
-                video.site === "YouTube" &&
-                video.official &&
-                TRAILER_TYPES.has(video.type)
-        ) ??
-        videos.find(
-            (video) => video.site === "YouTube" && TRAILER_TYPES.has(video.type)
-        ) ??
-        null
-    );
+    const recommendationIds = new Set<number>();
+    const recommendations = recommendationResults
+        .filter((item) => item.id !== movieId)
+        .filter((item) => {
+            if (recommendationIds.has(item.id)) {
+                return false;
+            }
+
+            recommendationIds.add(item.id);
+            return true;
+        })
+        .slice(0, 12);
+    const similarMovies = similarResults
+        .filter((item) => item.id !== movieId)
+        .filter((item) => !recommendationIds.has(item.id))
+        .slice(0, 12);
+
+    return { recommendations, similarMovies };
 };
+
+function MovieDetailActions({
+    homepage,
+    trailerUrl,
+}: {
+    homepage: string | null;
+    trailerUrl: string | null;
+}) {
+    return (
+        <div className="flex flex-wrap items-center gap-3">
+            {trailerUrl && (
+                <a
+                    className={buttonVariants({
+                        size: "lg",
+                        className:
+                            "rounded-xl bg-amber-500 px-4 text-zinc-950 hover:bg-amber-400",
+                    })}
+                    href={trailerUrl}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <PlayCircleIcon size={18} />
+                    Watch Trailer
+                </a>
+            )}
+            {homepage && (
+                <a
+                    className={buttonVariants({
+                        size: "lg",
+                        variant: "outline",
+                        className: "rounded-xl",
+                    })}
+                    href={homepage}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <ExternalLinkIcon size={16} />
+                    Official Site
+                </a>
+            )}
+            <Link
+                className={buttonVariants({
+                    size: "lg",
+                    variant: "ghost",
+                    className:
+                        "rounded-xl border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800",
+                })}
+                to="/movies"
+            >
+                <ArrowLeftIcon size={16} />
+                Back to Movies
+            </Link>
+        </div>
+    );
+}
 
 export const Route = createFileRoute("/movies/$id")({
     component: MovieDetailPage,
@@ -92,19 +159,24 @@ function MovieDetailPage() {
     const { data: recommendationsData, error: recommendationsError } = useQuery(
         movieRecommendationsQueryOptions(movieId)
     );
+    const { data: similarData, error: similarError } = useQuery(
+        movieSimilarQueryOptions(movieId)
+    );
 
     const director = credits?.crew.find((c) => c.job === "Director");
     const topCast = credits?.cast.slice(0, 12) ?? [];
     const galleryImages = imagesData?.backdrops.slice(0, 6) ?? [];
-    const recommendations =
-        recommendationsData?.results.map(normalizeMovie).slice(0, 12) ?? [];
+    const recommendationCandidates =
+        recommendationsData?.results.map(normalizeMovie) ?? [];
+    const similarCandidates = similarData?.results.map(normalizeMovie) ?? [];
+    const { recommendations, similarMovies } = getRelatedMovieRows(
+        movieId,
+        recommendationCandidates,
+        similarCandidates
+    );
     const trailer = getPreferredTrailer(videosData?.results ?? []);
-    const trailerUrl = trailer
-        ? `https://www.youtube.com/watch?v=${trailer.key}`
-        : null;
-    const trailerEmbedUrl = trailer
-        ? `https://www.youtube-nocookie.com/embed/${trailer.key}`
-        : null;
+    const trailerUrl = getYouTubeWatchUrl(trailer?.key);
+    const trailerEmbedUrl = getYouTubeEmbedUrl(trailer?.key);
     const productionCountries = movie.production_countries
         .map((country) => country.name)
         .join(", ");
@@ -116,7 +188,7 @@ function MovieDetailPage() {
     return (
         <div className="min-h-screen overflow-x-hidden bg-zinc-950">
             {/* Backdrop */}
-            <div className="relative h-120 overflow-hidden sm:h-[34rem]">
+            <div className="relative h-120 overflow-hidden sm:h-136">
                 <ImageWithFallback
                     alt={movie.title}
                     className="h-full w-full"
@@ -140,7 +212,7 @@ function MovieDetailPage() {
             </div>
 
             {/* Content */}
-            <div className="relative z-10 -mt-24 pb-14 sm:-mt-28 lg:-mt-32">
+            <div className="relative z-10 -mt-74 pb-14 sm:-mt-78 lg:-mt-82">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 md:px-8 lg:px-12">
                     <section className="grid gap-6 rounded-[2rem] border border-zinc-800/80 bg-zinc-950/92 p-4 shadow-2xl shadow-black/30 backdrop-blur sm:p-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8 lg:p-8">
                         <div className="mx-auto w-full max-w-[18rem]">
@@ -234,53 +306,10 @@ function MovieDetailPage() {
                                     : "Synopsis not available for this title yet."}
                             </p>
 
-                            <div className="flex flex-wrap items-center gap-3">
-                                {trailerUrl && (
-                                    <Button
-                                        className="rounded-xl bg-amber-500 px-4 text-zinc-950 hover:bg-amber-400"
-                                        render={
-                                            <a
-                                                href={trailerUrl}
-                                                rel="noopener noreferrer"
-                                                target="_blank"
-                                            />
-                                        }
-                                        size="lg"
-                                    >
-                                        <PlayCircleIcon size={18} />
-                                        Watch Trailer
-                                    </Button>
-                                )}
-                                {movie.homepage && (
-                                    <Button
-                                        className="rounded-xl"
-                                        render={
-                                            <a
-                                                href={movie.homepage}
-                                                rel="noopener noreferrer"
-                                                target="_blank"
-                                            />
-                                        }
-                                        size="lg"
-                                        variant="outline"
-                                    >
-                                        <ExternalLinkIcon size={16} />
-                                        Official Site
-                                    </Button>
-                                )}
-                                <Link
-                                    className={buttonVariants({
-                                        size: "lg",
-                                        variant: "ghost",
-                                        className:
-                                            "rounded-xl border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800",
-                                    })}
-                                    to="/movies"
-                                >
-                                    <ArrowLeftIcon size={16} />
-                                    Back to Movies
-                                </Link>
-                            </div>
+                            <MovieDetailActions
+                                homepage={movie.homepage}
+                                trailerUrl={trailerUrl}
+                            />
 
                             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                                 <Card className="border border-zinc-800 bg-zinc-900/70 py-0">
@@ -391,6 +420,19 @@ function MovieDetailPage() {
                         <Card className="border border-zinc-800 bg-zinc-900/70 py-0">
                             <CardContent className="py-4 text-sm text-zinc-500">
                                 Recommendations are unavailable right now.
+                            </CardContent>
+                        </Card>
+                    )}
+                    {similarMovies.length > 0 && (
+                        <TrendingCarousel
+                            items={similarMovies}
+                            title="Similar Movies"
+                        />
+                    )}
+                    {similarError && similarMovies.length === 0 && (
+                        <Card className="border border-zinc-800 bg-zinc-900/70 py-0">
+                            <CardContent className="py-4 text-sm text-zinc-500">
+                                Similar movies are unavailable right now.
                             </CardContent>
                         </Card>
                     )}

@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/correctness/useImageSize: Already set using TailwindCSS */
 
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import {
     CalendarIcon,
@@ -12,11 +13,14 @@ import {
     Tv2Icon,
 } from "lucide-react";
 import { useState } from "react";
+import { movieVideosQueryOptions } from "@/features/movies/queries";
+import { tvShowVideosQueryOptions } from "@/features/tv-shows/queries";
 import { cn } from "@/lib/utils";
 import type { NormalizedMedia } from "@/types/ui";
 import { getYear } from "@/utils/helpers/date";
 import { buildBackdropUrl } from "@/utils/helpers/image";
 import { truncate } from "@/utils/helpers/string";
+import { getPreferredTrailer, getYouTubeWatchUrl } from "@/utils/helpers/video";
 import { Button, buttonVariants } from "../ui/button";
 
 interface FeaturedHeroProps {
@@ -26,12 +30,28 @@ interface FeaturedHeroProps {
 
 const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const featured = items?.slice(0, 5) ?? [];
+    const current = featured[activeIndex] ?? featured[0];
+    const videoQueryOptions = movieVideosQueryOptions(0);
 
-    if (!items) {
-        return null;
+    if (current) {
+        if (current.mediaType === "movie") {
+            Object.assign(
+                videoQueryOptions,
+                movieVideosQueryOptions(current.id)
+            );
+        } else {
+            Object.assign(
+                videoQueryOptions,
+                tvShowVideosQueryOptions(current.id)
+            );
+        }
     }
-    const featured = items.slice(0, 5);
-    const current = featured[activeIndex];
+
+    const { data: videoData } = useQuery({
+        ...videoQueryOptions,
+        enabled: current !== undefined,
+    });
 
     if (!current) {
         return null;
@@ -39,6 +59,8 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
 
     const isMovie = current.mediaType === "movie";
     const href = isMovie ? `/movies/${current.id}` : `/tv/${current.id}`;
+    const trailer = getPreferredTrailer(videoData?.results);
+    const trailerUrl = getYouTubeWatchUrl(trailer?.key);
 
     return (
         <section
@@ -111,16 +133,31 @@ const FeaturedHero = ({ items, className }: FeaturedHeroProps) => {
 
                     {/* Actions */}
                     <div className="flex flex-wrap items-center gap-3 pb-3 md:pb-0">
-                        <Link
-                            className={buttonVariants({
-                                variant: "default",
-                                className: "h-10 px-4 sm:p-5",
-                            })}
-                            to={href}
-                        >
-                            <PlayIcon className="fill-zinc-900" size={16} />
-                            Watch Now
-                        </Link>
+                        {trailerUrl ? (
+                            <a
+                                className={buttonVariants({
+                                    variant: "default",
+                                    className: "h-10 px-4 sm:p-5",
+                                })}
+                                href={trailerUrl}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <PlayIcon className="fill-zinc-900" size={16} />
+                                Watch Now
+                            </a>
+                        ) : (
+                            <Link
+                                className={buttonVariants({
+                                    variant: "default",
+                                    className: "h-10 px-4 sm:p-5",
+                                })}
+                                to={href}
+                            >
+                                <PlayIcon className="fill-zinc-900" size={16} />
+                                Watch Now
+                            </Link>
+                        )}
 
                         <Link
                             className={buttonVariants({
