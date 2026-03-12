@@ -9,9 +9,10 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 
-import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
-import TanStackQueryProvider from "../integrations/tanstack-query/root-provider";
-import appCss from "../styles.css?url";
+import { configQueryOptions } from "#/features/config/query";
+import TanStackQueryDevtools from "#/integrations/tanstack-query/devtools";
+import TanStackQueryProvider from "#/integrations/tanstack-query/root-provider";
+import appCss from "#/styles.css?url";
 
 interface MyRouterContext {
     queryClient: QueryClient;
@@ -38,6 +39,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             },
         ],
     }),
+    loader: async ({ context: { queryClient } }) => {
+        await queryClient.ensureQueryData(configQueryOptions);
+    },
     shellComponent: RootDocument,
 });
 
@@ -49,7 +53,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             </head>
             <body>
                 <TanStackQueryProvider>
-                    <ThemeProvider>{children}</ThemeProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        enableColorScheme
+                        enableSystem
+                        storageKey="app-theme"
+                    >
+                        {children}
+                    </ThemeProvider>
                     <Toaster position="top-right" />
                     <TanStackDevtools
                         config={{
