@@ -1,0 +1,27 @@
+{
+  "projectName": "cineflux",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "bun",
+  "includeExamples": false,
+  "tailwind": true,
+  "addOnOptions": {
+    "prisma": {
+      "database": "postgres"
+    }
+  },
+  "envVarValues": {},
+  "git": false,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "neon",
+    "prisma",
+    "compiler",
+    "form",
+    "t3env",
+    "table",
+    "tanstack-query"
+  ]
+}
