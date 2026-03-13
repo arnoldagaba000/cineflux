@@ -11,7 +11,7 @@ import { DateString, Id, ImagePath } from "./helpers";
 import { ImageSchema, VideoSchema } from "./image-video";
 
 export const MovieSummarySchema = z.object({
-    adult: z.boolean().optional(),
+    adult: z.boolean().default(false),
     backdrop_path: ImagePath.optional(),
     genre_ids: z.array(z.number()).optional(),
     id: Id,
@@ -20,7 +20,7 @@ export const MovieSummarySchema = z.object({
     overview: z.string().optional(),
     popularity: z.number().optional(),
     poster_path: ImagePath.optional(),
-    release_date: z.string().optional(),
+    release_date: z.iso.date().optional(),
     title: z.string().optional(),
     video: z.boolean().optional(),
     vote_average: z.number().optional(),
@@ -87,3 +87,6 @@ export const MovieDetailsSchema = z.object({
     external_ids: ExternalIDsSchema.optional(),
 });
 export type MovieDetails = z.infer<typeof MovieDetailsSchema>;
+
+export const MoviesSchema = z.array(MovieSummarySchema);
+export type Movies = z.infer<typeof MoviesSchema>;

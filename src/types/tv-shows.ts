@@ -38,7 +38,7 @@ export const SeasonSchema = z.object({
 });
 export type Season = z.infer<typeof SeasonSchema>;
 
-export const TVDetailSchema = z.object({
+export const TVShowDetailSchema = z.object({
     backdrop_path: ImagePath.optional(),
     created_by: z
         .array(
@@ -129,3 +129,7 @@ export const TVDetailSchema = z.object({
     }),
     external_ids: ExternalIDsSchema.optional(),
 });
+export type TVShowDetails = z.infer<typeof TVShowDetailSchema>;
+
+export const TVShowsSchema = z.array(TVSummarySchema);
+export type TVShows = z.infer<typeof TVShowsSchema>;
