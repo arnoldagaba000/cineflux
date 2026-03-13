@@ -129,3 +129,7 @@ export const TVDetailSchema = z.object({
     }),
     external_ids: ExternalIDsSchema.optional(),
 });
+export type TVDetail = z.infer<typeof TVDetailSchema>;
+
+export const TVShowsSchema = z.array(TVSummarySchema);
+export type TVShows = z.infer<typeof TVShowsSchema>;
