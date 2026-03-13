@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import tmdbClient from "#/lib/config/client";
 import type { Paginated } from "#/types/pagination-search";
-import type { TVShows, TVSummary } from "#/types/tv-shows";
+import type { TVShowDetails, TVSummary } from "#/types/tv-shows";
 import {
     discoverTVShowsSchema,
     TVShowDetailsRequestSchema,
@@ -75,7 +75,7 @@ export const getTVShowDetails = createServerFn()
             ? data.append_to_response.join(",")
             : undefined;
 
-        const result = await tmdbClient.get<Paginated<TVShows>>(
+        const result = await tmdbClient.get<Paginated<TVShowDetails>>(
             `/tv/${data.tvShowId}`,
             {
                 params: append ? { append_to_response: append } : undefined,

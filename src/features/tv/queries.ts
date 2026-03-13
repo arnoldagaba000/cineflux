@@ -6,6 +6,7 @@ import {
     getAiringTodayTVShows,
     getOnTheAirTVShows,
     getPopularTVShows,
+    getTopRatedTVShows,
     getTVShowDetails,
 } from "./functions";
 import type {
@@ -39,6 +40,13 @@ export const popularTVShowsQueryOptions = (params: TVShowListParams) =>
     queryOptions({
         queryKey: TMDB_KEYS.tvShows.popular(params),
         queryFn: () => getPopularTVShows({ data: params }),
+        ...queryPolicies.lists,
+    });
+
+export const topRatedTVShowsQueryOptions = (params: TVShowListParams) =>
+    queryOptions({
+        queryKey: TMDB_KEYS.tvShows.topRated(params),
+        queryFn: () => getTopRatedTVShows({ data: params }),
         ...queryPolicies.lists,
     });
 
