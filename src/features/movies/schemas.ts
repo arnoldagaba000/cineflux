@@ -27,12 +27,12 @@ export const dicoverMovieSchema = z.object({
             "vote_count.desc",
         ])
         .default("popularity.desc"),
-    vote_average_gte: z.number().optional(),
-    vote_average_lte: z.number().optional(),
-    vote_count_gte: z.number().optional(),
-    vote_count_lte: z.number().optional(),
-    with_runtime_gte: z.number().optional(),
-    with_runtime_lte: z.number().optional(),
+    "vote_average.gte": z.number().optional(),
+    "vote_average.lte": z.number().optional(),
+    "vote_count.gte": z.number().optional(),
+    "vote_count.lte": z.number().optional(),
+    "with_runtime.gte": z.number().optional(),
+    "with_runtime.lte": z.number().optional(),
     year: z.number().optional(),
 });
 export type DiscoverMovieParams = z.infer<typeof dicoverMovieSchema>;
