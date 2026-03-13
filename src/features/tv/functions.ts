@@ -75,7 +75,7 @@ export const getTVShowDetails = createServerFn()
             ? data.append_to_response.join(",")
             : undefined;
 
-        const result = await tmdbClient.get<Paginated<TVShowDetails>>(
+        const result = await tmdbClient.get<TVShowDetails>(
             `/tv/${data.tvShowId}`,
             {
                 params: append ? { append_to_response: append } : undefined,
