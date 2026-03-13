@@ -9,30 +9,37 @@ import {
 } from "./functions";
 import type { TrendingParams } from "./schema";
 
-export const trendingAllQueryOptions = (params: TrendingParams) =>
+const buildTrendingQueryOptions = <T>(
+    keyFn: (params: TrendingParams) => readonly unknown[],
+    fetchFn: (args: { data: TrendingParams }) => Promise<T>,
+    params: TrendingParams
+) =>
     queryOptions({
-        queryKey: TMDB_KEYS.trending.all(params),
-        queryFn: () => getTrendingAll({ data: params }),
+        queryKey: keyFn(params),
+        queryFn: () => fetchFn({ data: params }),
         ...queryPolicies.lists,
     });
+
+export const trendingAllQueryOptions = (params: TrendingParams) =>
+    buildTrendingQueryOptions(TMDB_KEYS.trending.all, getTrendingAll, params);
 
 export const trendingMoviesQueryOptions = (params: TrendingParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.trending.movies(params),
-        queryFn: () => getTrendingMovies({ data: params }),
-        ...queryPolicies.lists,
-    });
+    buildTrendingQueryOptions(
+        TMDB_KEYS.trending.movies,
+        getTrendingMovies,
+        params
+    );
 
 export const trendingTVShowsQueryOptions = (params: TrendingParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.trending.tvShows(params),
-        queryFn: () => getTrendingTVShows({ data: params }),
-        ...queryPolicies.lists,
-    });
+    buildTrendingQueryOptions(
+        TMDB_KEYS.trending.tvShows,
+        getTrendingTVShows,
+        params
+    );
 
 export const trendingPersonsQueryOptions = (params: TrendingParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.trending.persons(params),
-        queryFn: () => getTrendingPersons({ data: params }),
-        ...queryPolicies.lists,
-    });
+    buildTrendingQueryOptions(
+        TMDB_KEYS.trending.persons,
+        getTrendingPersons,
+        params
+    );

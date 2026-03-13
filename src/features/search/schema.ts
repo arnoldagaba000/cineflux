@@ -9,14 +9,14 @@ const BaseSearchSchema = z.object({
     region: ISO_3166_1.optional(),
 });
 
-export const SearchMultiParamsSchema = BaseSearchSchema;
+export const SearchMultiParamsSchema = BaseSearchSchema.extend({});
 export type SearchMultiParams = z.infer<typeof SearchMultiParamsSchema>;
 
-export const SearchMovieParamsSchema = BaseSearchSchema;
+export const SearchMovieParamsSchema = BaseSearchSchema.extend({});
 export type SearchMovieParams = z.infer<typeof SearchMovieParamsSchema>;
 
-export const SearchTVParamsSchema = BaseSearchSchema;
+export const SearchTVParamsSchema = BaseSearchSchema.extend({});
 export type SearchTVParams = z.infer<typeof SearchTVParamsSchema>;
 
-export const SearchPersonParamsSchema = BaseSearchSchema;
+export const SearchPersonParamsSchema = BaseSearchSchema.extend({});
 export type SearchPersonParams = z.infer<typeof SearchPersonParamsSchema>;
