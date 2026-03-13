@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import tmdbClient from "#/lib/config/client";
 import type { Paginated } from "#/types/pagination-search";
-import type { TVShows } from "#/types/tv-shows";
+import type { TVShows, TVSummary } from "#/types/tv-shows";
 import {
     discoverTVShowsSchema,
     TVShowDetailsRequestSchema,
@@ -11,7 +11,7 @@ import {
 export const discoverTVShows = createServerFn()
     .inputValidator(discoverTVShowsSchema)
     .handler(async ({ data }) => {
-        const result = await tmdbClient.get<Paginated<TVShows>>(
+        const result = await tmdbClient.get<Paginated<TVSummary>>(
             "/discover/tv",
             {
                 params: data,
@@ -23,7 +23,7 @@ export const discoverTVShows = createServerFn()
 export const getAiringTodayTVShows = createServerFn()
     .inputValidator(TVShowListSchema)
     .handler(async ({ data }) => {
-        const result = await tmdbClient.get<Paginated<TVShows>>(
+        const result = await tmdbClient.get<Paginated<TVSummary>>(
             "/tv/airing_today",
             {
                 params: data,
@@ -35,7 +35,7 @@ export const getAiringTodayTVShows = createServerFn()
 export const getOnTheAirTVShows = createServerFn()
     .inputValidator(TVShowListSchema)
     .handler(async ({ data }) => {
-        const result = await tmdbClient.get<Paginated<TVShows>>(
+        const result = await tmdbClient.get<Paginated<TVSummary>>(
             "/tv/on_the_air",
             {
                 params: data,
@@ -47,16 +47,19 @@ export const getOnTheAirTVShows = createServerFn()
 export const getPopularTVShows = createServerFn()
     .inputValidator(TVShowListSchema)
     .handler(async ({ data }) => {
-        const result = await tmdbClient.get<Paginated<TVShows>>("/tv/popular", {
-            params: data,
-        });
+        const result = await tmdbClient.get<Paginated<TVSummary>>(
+            "/tv/popular",
+            {
+                params: data,
+            }
+        );
         return result.data;
     });
 
 export const getTopRatedTVShows = createServerFn()
     .inputValidator(TVShowListSchema)
     .handler(async ({ data }) => {
-        const result = await tmdbClient.get<Paginated<TVShows>>(
+        const result = await tmdbClient.get<Paginated<TVSummary>>(
             "/tv/top_rated",
             {
                 params: data,

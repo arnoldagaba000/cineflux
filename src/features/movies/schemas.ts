@@ -1,7 +1,7 @@
 import z from "zod";
 import { Id, ISO_3166_1 } from "#/types/helpers";
 
-export const dicoverMovieSchema = z.object({
+export const discoverMovieSchema = z.object({
     include_adult: z.boolean().default(false),
     include_video: z.boolean().default(false),
     language: z.string().default("en-US"),
@@ -35,7 +35,7 @@ export const dicoverMovieSchema = z.object({
     "with_runtime.lte": z.number().optional(),
     year: z.number().optional(),
 });
-export type DiscoverMovieParams = z.infer<typeof dicoverMovieSchema>;
+export type DiscoverMovieParams = z.infer<typeof discoverMovieSchema>;
 
 export const MovieListSchema = z.object({
     language: z.string().default("en-US"),

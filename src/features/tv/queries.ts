@@ -14,7 +14,7 @@ import type {
     TVShowListParams,
 } from "./schema";
 
-export const discoverTVShowsQueryoptions = (params: DiscoverTVShowsParams) =>
+export const discoverTVShowsQueryOptions = (params: DiscoverTVShowsParams) =>
     queryOptions({
         queryKey: TMDB_KEYS.tvShows.discover(params),
         queryFn: () => discoverTVShows({ data: params }),
