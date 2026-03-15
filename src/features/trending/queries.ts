@@ -13,12 +13,13 @@ import { TrendingParamsSchema } from "./schema";
 type TrendingParamsWithPage = TrendingParams & { page?: number };
 
 const buildTrendingQueryOptions = <T>(
-    keyFn: (params: TrendingParams) => readonly unknown[],
-    fetchFn: (args: { data: TrendingParams }) => Promise<T>,
+    keyFn: (params: TrendingParamsWithPage) => readonly unknown[],
+    fetchFn: (args: { data: TrendingParamsWithPage }) => Promise<T>,
     params?: TrendingParamsWithPage
 ) => {
     const data = TrendingParamsSchema.parse(params ?? {});
-    const merged = params?.page === undefined ? data : { ...data, page: params.page };
+    const merged: TrendingParamsWithPage =
+        params?.page === undefined ? data : { ...data, page: params.page };
     return queryOptions({
         queryKey: keyFn(merged),
         queryFn: () => fetchFn({ data: merged }),
