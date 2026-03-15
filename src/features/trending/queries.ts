@@ -8,36 +8,43 @@ import {
     getTrendingTVShows,
 } from "./functions";
 import type { TrendingParams } from "./schema";
+import { TrendingParamsSchema } from "./schema";
+
+type TrendingParamsWithPage = TrendingParams & { page?: number };
 
 const buildTrendingQueryOptions = <T>(
-    keyFn: (params: TrendingParams) => readonly unknown[],
-    fetchFn: (args: { data: TrendingParams }) => Promise<T>,
-    params: TrendingParams
-) =>
-    queryOptions({
-        queryKey: keyFn(params),
-        queryFn: () => fetchFn({ data: params }),
+    keyFn: (params: TrendingParamsWithPage) => readonly unknown[],
+    fetchFn: (args: { data: TrendingParamsWithPage }) => Promise<T>,
+    params?: TrendingParamsWithPage
+) => {
+    const data = TrendingParamsSchema.parse(params ?? {});
+    const merged: TrendingParamsWithPage =
+        params?.page === undefined ? data : { ...data, page: params.page };
+    return queryOptions({
+        queryKey: keyFn(merged),
+        queryFn: () => fetchFn({ data: merged }),
         ...queryPolicies.lists,
     });
+};
 
-export const trendingAllQueryOptions = (params: TrendingParams) =>
+export const trendingAllQueryOptions = (params?: TrendingParamsWithPage) =>
     buildTrendingQueryOptions(TMDB_KEYS.trending.all, getTrendingAll, params);
 
-export const trendingMoviesQueryOptions = (params: TrendingParams) =>
+export const trendingMoviesQueryOptions = (params?: TrendingParamsWithPage) =>
     buildTrendingQueryOptions(
         TMDB_KEYS.trending.movies,
         getTrendingMovies,
         params
     );
 
-export const trendingTVShowsQueryOptions = (params: TrendingParams) =>
+export const trendingTVShowsQueryOptions = (params?: TrendingParamsWithPage) =>
     buildTrendingQueryOptions(
         TMDB_KEYS.trending.tvShows,
         getTrendingTVShows,
         params
     );
 
-export const trendingPersonsQueryOptions = (params: TrendingParams) =>
+export const trendingPersonsQueryOptions = (params?: TrendingParamsWithPage) =>
     buildTrendingQueryOptions(
         TMDB_KEYS.trending.persons,
         getTrendingPersons,

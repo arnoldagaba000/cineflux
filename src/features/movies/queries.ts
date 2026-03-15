@@ -14,41 +14,58 @@ import type {
     MovieDetailRequest,
     MovieListParams,
 } from "./schemas";
+import { discoverMovieSchema, MovieListSchema } from "./schemas";
 
-export const discoverMoviesQueryOptions = (params: DiscoverMovieParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.movies.discover(params),
-        queryFn: () => getDiscoverMovies({ data: params }),
+const normalizeDiscoverParams = (params?: DiscoverMovieParams) =>
+    discoverMovieSchema.parse(params ?? {});
+
+const normalizeListParams = (params?: MovieListParams) =>
+    MovieListSchema.parse(params ?? {});
+
+export const discoverMoviesQueryOptions = (params?: DiscoverMovieParams) => {
+    const data = normalizeDiscoverParams(params);
+    return queryOptions({
+        queryKey: TMDB_KEYS.movies.discover(data),
+        queryFn: () => getDiscoverMovies({ data }),
         ...queryPolicies.lists,
     });
+};
 
-export const nowPlayingMoviesQueryOptions = (params: MovieListParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.movies.nowPlaying(params),
-        queryFn: () => getNowPlayingMovies({ data: params }),
+export const nowPlayingMoviesQueryOptions = (params?: MovieListParams) => {
+    const data = normalizeListParams(params);
+    return queryOptions({
+        queryKey: TMDB_KEYS.movies.nowPlaying(data),
+        queryFn: () => getNowPlayingMovies({ data }),
         ...queryPolicies.lists,
     });
+};
 
-export const popularMoviesQueryOptions = (params: MovieListParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.movies.popular(params),
-        queryFn: () => getPopularMovies({ data: params }),
+export const popularMoviesQueryOptions = (params?: MovieListParams) => {
+    const data = normalizeListParams(params);
+    return queryOptions({
+        queryKey: TMDB_KEYS.movies.popular(data),
+        queryFn: () => getPopularMovies({ data }),
         ...queryPolicies.lists,
     });
+};
 
-export const topRatedMoviesQueryOptions = (params: MovieListParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.movies.topRated(params),
-        queryFn: () => getTopRatedMovies({ data: params }),
+export const topRatedMoviesQueryOptions = (params?: MovieListParams) => {
+    const data = normalizeListParams(params);
+    return queryOptions({
+        queryKey: TMDB_KEYS.movies.topRated(data),
+        queryFn: () => getTopRatedMovies({ data }),
         ...queryPolicies.lists,
     });
+};
 
-export const upcomingMoviesQueryOptions = (params: MovieListParams) =>
-    queryOptions({
-        queryKey: TMDB_KEYS.movies.upcoming(params),
-        queryFn: () => getUpcomingMovies({ data: params }),
+export const upcomingMoviesQueryOptions = (params?: MovieListParams) => {
+    const data = normalizeListParams(params);
+    return queryOptions({
+        queryKey: TMDB_KEYS.movies.upcoming(data),
+        queryFn: () => getUpcomingMovies({ data }),
         ...queryPolicies.lists,
     });
+};
 
 export const movieDetailsQueryOptions = (data: MovieDetailRequest) =>
     queryOptions({
